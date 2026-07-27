@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppThemes {
+  static final Color primaryPurple = Color(0xFF7F22FE);
+  static final Color primaryGrey = Color(0xFF90A1B9);
   static final LinearGradient gradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
