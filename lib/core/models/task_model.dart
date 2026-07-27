@@ -1,17 +1,45 @@
 class TaskModel {
   final String taskTitle;
-  final bool? isCompleted;
+  final String description;
+  final bool isCompleted;
+  final bool isPinned;
+  final String priority;
+  final String category;
+  final DateTime createdAt;
 
-  TaskModel({required this.taskTitle, this.isCompleted = false});
+  TaskModel({
+    required this.taskTitle,
+    required this.description,
+    this.isCompleted = false,
+    this.isPinned = false,
+    required this.priority,
+    required this.category,
+    required this.createdAt,
+  });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
-      taskTitle: json['taskTitle'],
-      isCompleted: json['isCompleted'],
+      taskTitle: json['taskTitle'] ?? '',
+      description: json['description'] ?? '',
+      isCompleted: json['isCompleted'] ?? false,
+      isPinned: json['isPinned'] ?? false,
+      priority: json['priority'] ?? 'Low',
+      category: json['category'] ?? 'General',
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : DateTime.now(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'taskTitle': taskTitle, 'isCompleted': isCompleted};
+    return {
+      'taskTitle': taskTitle,
+      'description': description,
+      'isCompleted': isCompleted,
+      'isPinned': isPinned,
+      'priority': priority,
+      'category': category,
+      'createdAt': createdAt.toIso8601String(),
+    };
   }
 }

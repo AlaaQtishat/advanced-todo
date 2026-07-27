@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/widgets/state_filter_tab.dart';
 import 'package:todo/core/widgets/type_filter_tab.dart';
+import 'package:todo/screens/tasks_screen/widgets/customized_floating_button.dart';
+import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -15,11 +18,12 @@ class _TasksScreenState extends State<TasksScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: CustomizedFloatingButton(),
         backgroundColor: Color(0xFFF8FAFC),
         body: Column(
           children: [
             Container(
-              height: 250.h,
+              height: 200.h,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -33,7 +37,7 @@ class _TasksScreenState extends State<TasksScreen> {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 12.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Row(
@@ -92,22 +96,19 @@ class _TasksScreenState extends State<TasksScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                      top: 16.h,
-                    ),
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.h),
                     child: StateFilterTab(),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                      top: 16.h,
-                    ),
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.h),
                     child: TypeFilterTab(),
                   ),
                 ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: [TaskCard(), TaskCard(), TaskCard(), TaskCard()],
               ),
             ),
           ],
