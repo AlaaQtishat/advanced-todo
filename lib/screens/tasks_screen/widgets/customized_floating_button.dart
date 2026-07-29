@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo/core/constants/app_themes.dart';
-import 'package:todo/core/widgets/customized_outlined_button.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_addition_modal.dart';
 
 class CustomizedFloatingButton extends StatefulWidget {
@@ -16,8 +15,8 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56.w,
-      height: 56.w,
+      width: 64.w,
+      height: 64.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: AppThemes.gradient,
@@ -52,6 +51,7 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
           );
         },
         backgroundColor: Colors.transparent,
+
         elevation: 0,
         highlightElevation: 0,
         shape: CircleBorder(),

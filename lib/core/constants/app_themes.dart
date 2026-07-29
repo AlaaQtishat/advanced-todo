@@ -23,9 +23,9 @@ class AppThemes {
       ),
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.black87),
-      bodySmall: TextStyle(color: Colors.black87),
-      bodyMedium: TextStyle(color: Colors.black87),
+      bodyLarge: TextStyle(color: Color(0xFF1D293D)),
+      bodySmall: TextStyle(color: Color(0xFF1D293D)),
+      bodyMedium: TextStyle(color: Color(0xFF1D293D)),
     ),
     cardColor: Colors.white,
 

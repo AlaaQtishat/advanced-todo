@@ -6,7 +6,7 @@ class TaskModel {
   final String priority;
   final String category;
   final DateTime createdAt;
-
+  DateTime? dueDate;
   TaskModel({
     required this.taskTitle,
     required this.description,
@@ -15,6 +15,7 @@ class TaskModel {
     required this.priority,
     required this.category,
     required this.createdAt,
+    this.dueDate,
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,7 @@ class TaskModel {
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'])
           : DateTime.now(),
+      dueDate: json['dueDate'] != null ? DateTime.parse(json['dueDate']) : null,
     );
   }
 
@@ -40,6 +42,7 @@ class TaskModel {
       'priority': priority,
       'category': category,
       'createdAt': createdAt.toIso8601String(),
+      'dueDate': dueDate?.toIso8601String(),
     };
   }
 }

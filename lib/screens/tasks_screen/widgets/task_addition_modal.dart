@@ -18,6 +18,38 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
   final TextEditingController descriptionController = TextEditingController();
   String? priority;
   String? category;
+  DateTime? dueDate;
+
+  Future<void> _pickDueDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: Theme.of(
+              context,
+            ).colorScheme.copyWith(primary: AppThemes.primaryPurple),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppThemes.primaryPurple,
+              ),
+            ),
+          ),
+
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        dueDate = pickedDate;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -43,7 +75,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: AppThemes.primaryGrey.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -60,12 +92,11 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close, color: Colors.black54),
                     style: IconButton.styleFrom(
                       backgroundColor: Colors.grey.shade100,
                     ),
@@ -73,7 +104,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 ],
               ),
             ),
-            Divider(color: Colors.grey.shade300),
+            Divider(color: AppThemes.primaryGrey.withOpacity(0.5)),
             SizedBox(height: 12.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -88,6 +119,13 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   label: Text(
                     "What needs to be done?",
                     style: TextStyle(color: Colors.grey[500], fontSize: 16.sp),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                      width: 1,
+                    ),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -111,6 +149,13 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                     "Add a note (optional)",
                     style: TextStyle(color: Colors.grey[500], fontSize: 16.sp),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                      width: 1,
+                    ),
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -118,6 +163,75 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
               ),
             ),
             SizedBox(height: 16.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                "DUE DATE (OPTIONAL)",
+                style: TextStyle(
+                  letterSpacing: 2,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: InkWell(
+                onTap: _pickDueDate,
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 16.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppThemes.primaryGrey.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey.shade400),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        color: Colors.grey[500],
+                        size: 20.sp,
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        dueDate == null
+                            ? "Select a deadline"
+                            : "${dueDate!.day}/${dueDate!.month}/${dueDate!.year}",
+                        style: TextStyle(
+                          color: dueDate == null ? Colors.grey[500] : null,
+                          fontSize: 16.sp,
+                          fontWeight: dueDate == null
+                              ? FontWeight.normal
+                              : FontWeight.w600,
+                        ),
+                      ),
+                      const Spacer(),
+                      if (dueDate != null)
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              dueDate = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.grey[400],
+                            size: 20.sp,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.h),
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
@@ -303,14 +417,15 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                               priority: priority!,
                               category: category!,
                               createdAt: DateTime.now(),
+                              dueDate: dueDate,
                             ),
                           );
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Task added successfully! ✅"),
+                              content: Text("Task added successfully!"),
                               backgroundColor: AppThemes.primaryPurple
-                                  .withOpacity(0.5),
+                                  .withOpacity(0.1),
                             ),
                           );
                         }

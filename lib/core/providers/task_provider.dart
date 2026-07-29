@@ -1,76 +1,9 @@
-// import 'package:flutter/material.dart';
-// import 'package:todo/core/models/task_model.dart';
-// import 'package:todo/core/services/local_storage.dart';
-//
-// class TaskProvider extends ChangeNotifier {
-//   List<TaskModel> _globalTasks = [];
-//   String _currentFilter = "All";
-//
-//   String get currentFilter => _currentFilter;
-//
-//   List<TaskModel> get displayTasks {
-//     if (_currentFilter == "Active") {
-//       return _globalTasks.where((task) => task.isCompleted == false).toList();
-//     } else if (_currentFilter == "Completed") {
-//       return _globalTasks.where((task) => task.isCompleted == true).toList();
-//     }
-//     return _globalTasks;
-//   }
-//
-//   Future<void> loadTasks() async {
-//     _globalTasks = await LocalStorage.loadTasks();
-//     notifyListeners();
-//   }
-//
-//   void addTask(String title) {
-//     _globalTasks.insert(0, TaskModel(taskTitle: title));
-//     _saveAndNotify();
-//   }
-//
-//   void removeTask(TaskModel task) {
-//     _globalTasks.remove(task);
-//     _saveAndNotify();
-//   }
-//
-//   void toggleTask(TaskModel task, bool newValue) {
-//     final index = _globalTasks.indexOf(task);
-//
-//     _globalTasks[index] = TaskModel(
-//       taskTitle: task.taskTitle,
-//       isCompleted: newValue,
-//     );
-//
-//     _globalTasks.sort((a, b) {
-//       if (a.isCompleted == b.isCompleted) return 0;
-//       if (a.isCompleted == true) return 1;
-//       return -1;
-//     });
-//
-//     _saveAndNotify();
-//   }
-//
-//   void clearCompletedTasks() {
-//     _globalTasks.removeWhere((task) => task.isCompleted == true);
-//     _saveAndNotify();
-//   }
-//
-//   void setFilter(String newFilter) {
-//     _currentFilter = newFilter;
-//     notifyListeners();
-//   }
-//
-//   void _saveAndNotify() {
-//     LocalStorage.saveTasks(_globalTasks);
-//     notifyListeners();
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/services/local_storage.dart';
 
 class TaskProvider extends ChangeNotifier {
   List<TaskModel> _globalTasks = [];
-  //String _currentFilter = "All";
   String _statusFilter = "All";
   String _categoryFilter = "All";
 
@@ -86,8 +19,6 @@ class TaskProvider extends ChangeNotifier {
     _categoryFilter = category;
     notifyListeners();
   }
-
-  // String get currentFilter => _currentFilter;
 
   Future<void> loadTasks() async {
     _globalTasks = await LocalStorage.loadTasks();
@@ -106,16 +37,36 @@ class TaskProvider extends ChangeNotifier {
 
   void toggleTask(TaskModel task, bool newValue) {
     final index = _globalTasks.indexOf(task);
-
     _globalTasks[index] = TaskModel(
       taskTitle: task.taskTitle,
       description: task.description,
       isCompleted: newValue,
-      isPinned: task.isPinned,
+      isPinned: false,
       priority: task.priority,
       category: task.category,
       createdAt: task.createdAt,
+      dueDate: task.dueDate,
     );
+    _saveAndNotify();
+  }
+
+  void updateTaskTitle(DateTime createdAt, String newTitle) {
+    final index = _globalTasks.indexWhere(
+      (task) => task.createdAt == createdAt,
+    );
+    final existingTask = _globalTasks[index];
+
+    _globalTasks[index] = TaskModel(
+      taskTitle: newTitle,
+      description: existingTask.description,
+      isCompleted: existingTask.isCompleted,
+      isPinned: existingTask.isPinned,
+      priority: existingTask.priority,
+      category: existingTask.category,
+      createdAt: existingTask.createdAt,
+      dueDate: existingTask.dueDate,
+    );
+
     _saveAndNotify();
   }
 
@@ -130,6 +81,7 @@ class TaskProvider extends ChangeNotifier {
       priority: task.priority,
       category: task.category,
       createdAt: task.createdAt,
+      dueDate: task.dueDate,
     );
     _saveAndNotify();
   }
@@ -146,8 +98,8 @@ class TaskProvider extends ChangeNotifier {
     }).toList();
 
     active.sort((a, b) {
-      if (a.isPinned != b.isPinned) return a.isPinned ? -1 : 1;
-      return b.createdAt.compareTo(a.createdAt);
+      if (a.isPinned == b.isPinned) return 0;
+      return a.isPinned ? -1 : 1;
     });
 
     return active;
@@ -164,8 +116,6 @@ class TaskProvider extends ChangeNotifier {
       return isDone && matchesCategory;
     }).toList();
 
-    done.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-
     return done;
   }
 
@@ -174,10 +124,24 @@ class TaskProvider extends ChangeNotifier {
     _saveAndNotify();
   }
 
-  // void setFilter(String newFilter) {
-  //   _currentFilter = newFilter;
-  //   notifyListeners();
-  // }
+  void reorderTasks(int oldIndex, int newIndex, List<TaskModel> currentList) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final tempCurrentList = List<TaskModel>.from(currentList);
+    final task = tempCurrentList.removeAt(oldIndex);
+    tempCurrentList.insert(newIndex, task);
+    _globalTasks.remove(task);
+    if (newIndex == 0) {
+      _globalTasks.insert(0, task);
+    } else {
+      final itemBefore = tempCurrentList[newIndex - 1];
+      final globalIndex = _globalTasks.indexOf(itemBefore);
+      _globalTasks.insert(globalIndex + 1, task);
+    }
+
+    _saveAndNotify();
+  }
 
   void _saveAndNotify() {
     LocalStorage.saveTasks(_globalTasks);
