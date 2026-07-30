@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppThemes {
+  static final Color primaryPurple = Color(0xFF7F22FE);
+  static final Color primaryGrey = Color(0xFF62748E);
+  static final Color highPriorityRed = Color(0xFFFB2C36);
+  static final Color mediumPriorityOrange = Color(0xFFFE9A00);
+  static final Color lowPriorityBlue = Colors.cyan[700]!;
+
   static final LinearGradient gradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFF8046D5), Color(0xFF7EA6FD), Color(0xFF7E9BF9)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFF7F22FE), Color(0xFF615FFF)],
   );
 
   static final lightTheme = ThemeData(
@@ -17,9 +23,9 @@ class AppThemes {
       ),
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.black87),
-      bodySmall: TextStyle(color: Colors.black87),
-      bodyMedium: TextStyle(color: Colors.black87),
+      bodyLarge: TextStyle(color: Color(0xFF1D293D)),
+      bodySmall: TextStyle(color: Color(0xFF1D293D)),
+      bodyMedium: TextStyle(color: Color(0xFF1D293D)),
     ),
     cardColor: Colors.white,
 
