@@ -50,6 +50,8 @@ class TaskProvider extends ChangeNotifier {
     _saveAndNotify();
   }
 
+  List<TaskModel> get allTasks => _globalTasks;
+
   List<TaskModel> get activeTasks {
     if (_statusFilter == "Done") return [];
 
