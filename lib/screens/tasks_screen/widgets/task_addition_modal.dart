@@ -433,6 +433,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   child: Text(
                     "Add Task",
                     style: TextStyle(
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
                     ),

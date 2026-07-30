@@ -30,26 +30,6 @@ class TaskProvider extends ChangeNotifier {
     _saveAndNotify();
   }
 
-  void removeTask(TaskModel task) {
-    _globalTasks.remove(task);
-    _saveAndNotify();
-  }
-
-  void toggleTask(TaskModel task, bool newValue) {
-    final index = _globalTasks.indexOf(task);
-    _globalTasks[index] = TaskModel(
-      taskTitle: task.taskTitle,
-      description: task.description,
-      isCompleted: newValue,
-      isPinned: false,
-      priority: task.priority,
-      category: task.category,
-      createdAt: task.createdAt,
-      dueDate: task.dueDate,
-    );
-    _saveAndNotify();
-  }
-
   void updateTaskTitle(DateTime createdAt, String newTitle) {
     final index = _globalTasks.indexWhere(
       (task) => task.createdAt == createdAt,
@@ -67,22 +47,6 @@ class TaskProvider extends ChangeNotifier {
       dueDate: existingTask.dueDate,
     );
 
-    _saveAndNotify();
-  }
-
-  void togglePin(TaskModel task) {
-    final index = _globalTasks.indexOf(task);
-
-    _globalTasks[index] = TaskModel(
-      taskTitle: task.taskTitle,
-      description: task.description,
-      isCompleted: task.isCompleted,
-      isPinned: !task.isPinned,
-      priority: task.priority,
-      category: task.category,
-      createdAt: task.createdAt,
-      dueDate: task.dueDate,
-    );
     _saveAndNotify();
   }
 
@@ -124,19 +88,94 @@ class TaskProvider extends ChangeNotifier {
     _saveAndNotify();
   }
 
+  void markAllAsCompleted() {
+    for (int i = 0; i < _globalTasks.length; i++) {
+      if (!_globalTasks[i].isCompleted) {
+        _globalTasks[i] = TaskModel(
+          taskTitle: _globalTasks[i].taskTitle,
+          description: _globalTasks[i].description,
+          isCompleted: true,
+          isPinned: _globalTasks[i].isPinned,
+          priority: _globalTasks[i].priority,
+          category: _globalTasks[i].category,
+          createdAt: _globalTasks[i].createdAt,
+          dueDate: _globalTasks[i].dueDate,
+        );
+      }
+    }
+    _saveAndNotify();
+  }
+
+  void removeTask(TaskModel task) {
+    _globalTasks.removeWhere((t) => t.createdAt == task.createdAt);
+    _saveAndNotify();
+  }
+
+  void toggleTask(TaskModel task, bool newValue) {
+    final index = _globalTasks.indexWhere((t) => t.createdAt == task.createdAt);
+
+    _globalTasks[index] = TaskModel(
+      taskTitle: task.taskTitle,
+      description: task.description,
+      isCompleted: newValue,
+      isPinned: false,
+      priority: task.priority,
+      category: task.category,
+      createdAt: task.createdAt,
+      dueDate: task.dueDate,
+    );
+    _saveAndNotify();
+  }
+
+  void togglePin(TaskModel task) {
+    final index = _globalTasks.indexWhere((t) => t.createdAt == task.createdAt);
+
+    _globalTasks[index] = TaskModel(
+      taskTitle: task.taskTitle,
+      description: task.description,
+      isCompleted: task.isCompleted,
+      isPinned: !task.isPinned,
+      priority: task.priority,
+      category: task.category,
+      createdAt: task.createdAt,
+      dueDate: task.dueDate,
+    );
+    _saveAndNotify();
+  }
+
   void reorderTasks(int oldIndex, int newIndex, List<TaskModel> currentList) {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
+    if (oldIndex == newIndex) {
+      return;
+    }
+    final draggedTask = currentList[oldIndex];
+    final pinnedCount = currentList.where((t) => t.isPinned).length;
+    if (draggedTask.isPinned) {
+      if (newIndex >= pinnedCount) {
+        return;
+      }
+    } else {
+      if (newIndex < pinnedCount) {
+        return;
+      }
+    }
     final tempCurrentList = List<TaskModel>.from(currentList);
     final task = tempCurrentList.removeAt(oldIndex);
     tempCurrentList.insert(newIndex, task);
-    _globalTasks.remove(task);
+    _globalTasks.removeWhere((t) => t.createdAt == task.createdAt);
     if (newIndex == 0) {
-      _globalTasks.insert(0, task);
+      final itemAfter = tempCurrentList[1];
+      final globalIndex = _globalTasks.indexWhere(
+        (t) => t.createdAt == itemAfter.createdAt,
+      );
+      _globalTasks.insert(globalIndex, task);
     } else {
       final itemBefore = tempCurrentList[newIndex - 1];
-      final globalIndex = _globalTasks.indexOf(itemBefore);
+      final globalIndex = _globalTasks.indexWhere(
+        (t) => t.createdAt == itemBefore.createdAt,
+      );
       _globalTasks.insert(globalIndex + 1, task);
     }
 

@@ -96,10 +96,24 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   String _formatDate(DateTime date) {
-    final difference = DateTime.now().difference(date);
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
     if (difference.inMinutes < 1) return "just now";
     if (difference.inHours < 1) return "${difference.inMinutes} mins ago";
-    if (difference.inDays < 1) return "${difference.inHours} hours ago";
+
+    final today = DateTime(now.year, now.month, now.day);
+    final createdDay = DateTime(date.year, date.month, date.day);
+    final dayDiff = today.difference(createdDay).inDays;
+
+    if (dayDiff == 0) {
+      return "${difference.inHours} hours ago";
+    } else if (dayDiff == 1) {
+      return "Yesterday";
+    } else if (dayDiff > 1 && dayDiff <= 7) {
+      return "$dayDiff days ago";
+    }
+
     return "${date.day}/${date.month}";
   }
 
@@ -342,7 +356,7 @@ class _TaskCardState extends State<TaskCard> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusGeometry.circular(8),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           backgroundColor: Colors.red,
                         ),

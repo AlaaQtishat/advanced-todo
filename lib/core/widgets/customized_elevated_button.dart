@@ -8,6 +8,7 @@ class CustomizedElevatedButton extends StatelessWidget {
   final Color? borderColor;
   final EdgeInsets? textPadding;
   final double? fontSize;
+  final bool isSelected;
 
   const CustomizedElevatedButton({
     super.key,
@@ -18,28 +19,30 @@ class CustomizedElevatedButton extends StatelessWidget {
     this.borderColor = Colors.transparent,
     this.textPadding = const EdgeInsets.symmetric(horizontal: 16.0),
     this.fontSize = 14.0,
+    this.isSelected = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        //would use this shadow when the button is pressed.
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.black.withOpacity(0.10),
-        //     offset: const Offset(0, 1),
-        //     blurRadius: 2,
-        //     spreadRadius: -1,
-        //   ),
-        //
-        //   BoxShadow(
-        //     color: Colors.black.withOpacity(0.10),
-        //     offset: const Offset(0, 1),
-        //     blurRadius: 3,
-        //     spreadRadius: 0,
-        //   ),
-        // ],
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.10),
+                  offset: const Offset(0, 1),
+                  blurRadius: 2,
+                  spreadRadius: -1,
+                ),
+
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.10),
+                  offset: const Offset(0, 1),
+                  blurRadius: 3,
+                  spreadRadius: 0,
+                ),
+              ]
+            : null,
         color: color,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: borderColor!),
@@ -59,7 +62,7 @@ class CustomizedElevatedButton extends StatelessWidget {
             text,
             style: TextStyle(
               color: textColor,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w900,
               fontSize: fontSize,
             ),
           ),

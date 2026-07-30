@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/providers/task_provider.dart';
-import 'package:todo/core/providers/theme_provider.dart';
-import 'package:todo/core/widgets/state_filter_tab.dart';
-import 'package:todo/core/widgets/type_filter_tab.dart';
 import 'package:todo/screens/tasks_screen/widgets/customized_floating_button.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
-import 'package:intl/intl.dart';
+import 'package:todo/screens/tasks_screen/widgets/task_screen_header.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -23,8 +20,8 @@ class _TasksScreenState extends State<TasksScreen> {
     super.initState();
   }
 
-  final formattedDate = DateFormat('EEE, MMMM d').format(DateTime.now());
-
+  String category = "All";
+  String status = "All";
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,101 +30,7 @@ class _TasksScreenState extends State<TasksScreen> {
         backgroundColor: Color(0xFFF8FAFC),
         body: Column(
           children: [
-            Container(
-              height: 200.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  SizedBox(height: 12.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "My Tasks",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.sp,
-                              ),
-                            ),
-                            Text(
-                              formattedDate,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Row(
-                          children: [
-                            Consumer<ThemeProvider>(
-                              builder: (context, themeProvider, child) {
-                                return IconButton(
-                                  style: IconButton.styleFrom(
-                                    backgroundColor: Color(0xFFF1F5F9),
-                                  ),
-                                  icon: themeProvider.isDarkMode
-                                      ? Icon(
-                                          Icons.wb_sunny_outlined,
-                                          size: 28.sp,
-                                          color: Color(0xFF62748E),
-                                        )
-                                      : Icon(
-                                          Icons.bedtime_outlined,
-                                          size: 28.sp,
-                                          color: Color(0xFF62748E),
-                                        ),
-                                  onPressed: () {
-                                    themeProvider.toggleTheme();
-                                  },
-                                );
-                              },
-                            ),
-                            SizedBox(width: 8.w),
-                            IconButton(
-                              style: IconButton.styleFrom(
-                                backgroundColor: Color(0xFFF1F5F9),
-                              ),
-                              icon: Icon(
-                                Icons.check_box_outlined,
-                                size: 28.sp,
-                                color: Color(0xFF62748E),
-                              ),
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.h),
-                    child: StateFilterTab(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.h),
-                    child: TypeFilterTab(),
-                  ),
-                ],
-              ),
-            ),
+            TaskScreenHeader(),
             Expanded(
               child: Consumer<TaskProvider>(
                 builder: (context, provider, child) {
