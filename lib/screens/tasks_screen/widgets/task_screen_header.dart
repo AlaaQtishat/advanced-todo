@@ -14,8 +14,9 @@ class TaskScreenHeader extends StatelessWidget {
   final formattedDate = DateFormat('EEE, MMMM d').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
-      height: 190.h,
+      height: 200.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -29,7 +30,7 @@ class TaskScreenHeader extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(height: 12.h),
+          SizedBox(height: statusBarHeight),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
