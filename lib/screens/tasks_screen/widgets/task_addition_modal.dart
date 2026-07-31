@@ -163,6 +163,161 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
               ),
             ),
             SizedBox(height: 16.h),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                "PRIORITY",
+                style: TextStyle(
+                  letterSpacing: 2,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: CustomizedOutlinedButton(
+                      label: "High",
+                      color: AppThemes.highPriorityRed,
+                      isSelected: priority == "High" ? true : false,
+                      onTap: () {
+                        setState(() {
+                          priority = "High";
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: CustomizedOutlinedButton(
+                      label: "Medium",
+                      color: AppThemes.mediumPriorityOrange,
+                      isSelected: priority == "Medium" ? true : false,
+                      onTap: () {
+                        setState(() {
+                          priority = "Medium";
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: CustomizedOutlinedButton(
+                      label: "Low",
+                      color: AppThemes.lowPriorityBlue,
+                      isSelected: priority == "Low" ? true : false,
+                      onTap: () {
+                        setState(() {
+                          priority = "Low";
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                "CATEGORY",
+                style: TextStyle(
+                  letterSpacing: 2,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomizedOutlinedButton(
+                          color: category == "Work"
+                              ? AppThemes.primaryPurple
+                              : Colors.grey.shade500,
+                          label: "Work",
+                          isSelected: category == "Work" ? true : false,
+                          onTap: () {
+                            setState(() {
+                              category = "Work";
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: CustomizedOutlinedButton(
+                          color: category == "Personal"
+                              ? AppThemes.primaryPurple
+                              : Colors.grey.shade500,
+                          label: "Personal",
+                          isSelected: category == "Personal" ? true : false,
+                          onTap: () {
+                            setState(() {
+                              category = "Personal";
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomizedOutlinedButton(
+                          label: "Shopping",
+                          color: category == "Shopping"
+                              ? AppThemes.primaryPurple
+                              : Colors.grey.shade500,
+                          isSelected: category == "Shopping" ? true : false,
+
+                          onTap: () {
+                            setState(() {
+                              category = "Shopping";
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: CustomizedOutlinedButton(
+                          label: "Study",
+                          color: category == "Study"
+                              ? AppThemes.primaryPurple
+                              : Colors.grey.shade500,
+                          isSelected: category == "Study" ? true : false,
+
+                          onTap: () {
+                            setState(() {
+                              category = "Study";
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
@@ -228,146 +383,6 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                     ],
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 16.h),
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(
-                "PRIORITY",
-                style: TextStyle(
-                  letterSpacing: 2,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black54,
-                ),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: CustomizedOutlinedButton(
-                      label: "High",
-                      color: AppThemes.highPriorityRed,
-                      isSelected: priority == "High" ? true : false,
-                      onTap: () {
-                        setState(() {
-                          priority = "High";
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: CustomizedOutlinedButton(
-                      label: "Medium",
-                      color: AppThemes.mediumPriorityOrange,
-                      isSelected: priority == "Medium" ? true : false,
-                      onTap: () {
-                        setState(() {
-                          priority = "Medium";
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: CustomizedOutlinedButton(
-                      label: "Low",
-                      color: AppThemes.lowPriorityBlue,
-                      isSelected: priority == "Low" ? true : false,
-                      onTap: () {
-                        setState(() {
-                          priority = "Low";
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(
-                "CATEGORY",
-                style: TextStyle(
-                  letterSpacing: 2,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black54,
-                ),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomizedOutlinedButton(
-                          label: "Work",
-                          isSelected: category == "Work" ? true : false,
-                          onTap: () {
-                            setState(() {
-                              category = "Work";
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                        child: CustomizedOutlinedButton(
-                          label: "Personal",
-                          isSelected: category == "Personal" ? true : false,
-                          onTap: () {
-                            setState(() {
-                              category = "Personal";
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomizedOutlinedButton(
-                          label: "Shopping",
-                          isSelected: category == "Shopping" ? true : false,
-
-                          onTap: () {
-                            setState(() {
-                              category = "Shopping";
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                        child: CustomizedOutlinedButton(
-                          label: "Study",
-                          isSelected: category == "Study" ? true : false,
-
-                          onTap: () {
-                            setState(() {
-                              category = "Study";
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
             SizedBox(height: 24.h),
