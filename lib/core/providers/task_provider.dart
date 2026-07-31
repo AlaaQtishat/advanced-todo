@@ -9,6 +9,20 @@ class TaskProvider extends ChangeNotifier {
   int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
   String get statusFilter => _statusFilter;
   String get categoryFilter => _categoryFilter;
+  int get highPriorityCount =>
+      _globalTasks.where((task) => task.priority == "High").length;
+  int get mediumPriorityCount =>
+      _globalTasks.where((task) => task.priority == "Medium").length;
+  int get lowPriorityCount =>
+      _globalTasks.where((task) => task.priority == "Low").length;
+  int get workCategoryCount =>
+      _globalTasks.where((task) => task.category == "Work").length;
+  int get personalCategoryCount =>
+      _globalTasks.where((task) => task.category == "Personal").length;
+  int get shoppingCategoryCount =>
+      _globalTasks.where((task) => task.category == "Shopping").length;
+  int get studyCategoryCount =>
+      _globalTasks.where((task) => task.category == "Study").length;
 
   void setStatusFilter(String status) {
     _statusFilter = status;
@@ -18,6 +32,22 @@ class TaskProvider extends ChangeNotifier {
   void setCategoryFilter(String category) {
     _categoryFilter = category;
     notifyListeners();
+  }
+
+  bool isDueSoon(DateTime? dueDate) {
+    if (dueDate == null) return false;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final due = DateTime(dueDate.year, dueDate.month, dueDate.day);
+
+    final diffDays = due.difference(today).inDays;
+
+    return diffDays <= 3;
+  }
+
+  List<TaskModel> get soonTasks {
+    return activeTasks.where((task) => isDueSoon(task.dueDate)).toList();
   }
 
   Future<void> loadTasks() async {
@@ -156,10 +186,12 @@ class TaskProvider extends ChangeNotifier {
     final pinnedCount = currentList.where((t) => t.isPinned).length;
     if (draggedTask.isPinned) {
       if (newIndex >= pinnedCount) {
+        _saveAndNotify();
         return;
       }
     } else {
       if (newIndex < pinnedCount) {
+        _saveAndNotify();
         return;
       }
     }
