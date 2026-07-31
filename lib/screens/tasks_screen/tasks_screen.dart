@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/screens/tasks_screen/widgets/customized_floating_button.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_screen_header.dart';
@@ -25,8 +27,8 @@ class _TasksScreenState extends State<TasksScreen> {
   String status = "All";
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     return Scaffold(
-      backgroundColor: Color(0xFFF8FAFC),
       body: Column(
         children: [
           TaskScreenHeader(),
@@ -37,9 +39,11 @@ class _TasksScreenState extends State<TasksScreen> {
                 final doneTasks = provider.doneTasks;
 
                 return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 10.h,
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                    top: 10.h,
+                    bottom: 80.h,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +55,9 @@ class _TasksScreenState extends State<TasksScreen> {
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.5,
-                            color: Colors.blueGrey.shade400,
+                            color: isDark
+                                ? AppThemes.lightGrey
+                                : AppThemes.darkGrey,
                           ),
                         ),
                         SizedBox(height: 12.h),
@@ -103,7 +109,9 @@ class _TasksScreenState extends State<TasksScreen> {
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.5,
-                            color: Colors.blueGrey.shade400,
+                            color: isDark
+                                ? AppThemes.lightGrey
+                                : AppThemes.darkGrey,
                           ),
                         ),
                         SizedBox(height: 12.h),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 
 class CustomizedBottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -14,14 +16,18 @@ class CustomizedBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     return Container(
       height: 90.h,
       padding: EdgeInsets.only(left: 10.w, right: 10.h, top: 8.h, bottom: 4.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? theme.scaffoldBackgroundColor : Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: isDark
+                ? Colors.white.withOpacity(0.1)
+                : Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -59,7 +65,7 @@ class CustomizedBottomNavBar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppThemes.primaryGrey.withOpacity(0.1)
+              ? AppThemes.lightGrey.withOpacity(0.1)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(24.r),
         ),
@@ -84,7 +90,7 @@ class CustomizedBottomNavBar extends StatelessWidget {
               icon,
               color: isSelected
                   ? AppThemes.primaryPurple
-                  : AppThemes.primaryGrey,
+                  : Colors.grey.shade500,
               size: 26.sp,
             ),
             SizedBox(height: 4.h),
@@ -95,7 +101,7 @@ class CustomizedBottomNavBar extends StatelessWidget {
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 color: isSelected
                     ? AppThemes.primaryPurple
-                    : AppThemes.primaryGrey,
+                    : Colors.grey.shade500,
               ),
             ),
           ],

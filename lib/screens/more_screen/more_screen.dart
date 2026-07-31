@@ -21,7 +21,6 @@ class _MoreScreenState extends State<MoreScreen> {
     final activeTasks = context.watch<TaskProvider>().activeTasks;
     final doneTasks = context.watch<TaskProvider>().doneTasks;
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
         children: [
           Container(
@@ -77,13 +76,13 @@ class _MoreScreenState extends State<MoreScreen> {
                             height: 40.h,
                             width: 40.w,
                             decoration: BoxDecoration(
-                              color: AppThemes.primaryGrey.withOpacity(0.1),
+                              color: AppThemes.lightGrey.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(16.r),
                             ),
                             child: Icon(
                               Icons.wb_sunny_outlined,
                               size: 24.sp,
-                              color: AppThemes.primaryGrey,
+                              color: AppThemes.lightGrey,
                             ),
                           ),
                           SizedBox(width: 16.w),
@@ -113,8 +112,9 @@ class _MoreScreenState extends State<MoreScreen> {
 
                               elevation: 0,
                               shadowColor: Colors.transparent,
-                              backgroundColor: AppThemes.primaryGrey
-                                  .withOpacity(0.1),
+                              backgroundColor: AppThemes.lightGrey.withOpacity(
+                                0.1,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16.r),
                               ),
@@ -216,7 +216,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             ],
                           ),
                           Divider(
-                            color: AppThemes.primaryGrey.withOpacity(0.1),
+                            color: AppThemes.lightGrey.withOpacity(0.1),
                             height: 24.h,
                           ),
                           Row(
@@ -225,7 +225,7 @@ class _MoreScreenState extends State<MoreScreen> {
                                 height: 40.h,
                                 width: 40.w,
                                 decoration: BoxDecoration(
-                                  color: AppThemes.primaryGrey.withOpacity(0.1),
+                                  color: AppThemes.lightGrey.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(16.r),
                                 ),
                                 child: Icon(
@@ -307,7 +307,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               Text(
                                 "Total tasks",
                                 style: TextStyle(
-                                  color: AppThemes.primaryGrey,
+                                  color: AppThemes.lightGrey,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16.sp,
                                 ),
@@ -328,7 +328,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               Text(
                                 "Completed tasks",
                                 style: TextStyle(
-                                  color: AppThemes.primaryGrey,
+                                  color: AppThemes.lightGrey,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16.sp,
                                 ),
@@ -349,7 +349,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               Text(
                                 "Active tasks",
                                 style: TextStyle(
-                                  color: AppThemes.primaryGrey,
+                                  color: AppThemes.lightGrey,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16.sp,
                                 ),
@@ -370,7 +370,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               Text(
                                 "Pinned tasks",
                                 style: TextStyle(
-                                  color: AppThemes.primaryGrey,
+                                  color: AppThemes.lightGrey,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16.sp,
                                 ),

@@ -75,7 +75,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: AppThemes.primaryGrey.withOpacity(0.5),
+                  color: AppThemes.lightGrey.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -104,7 +104,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 ],
               ),
             ),
-            Divider(color: AppThemes.primaryGrey.withOpacity(0.5)),
+            Divider(color: AppThemes.lightGrey.withOpacity(0.5)),
             SizedBox(height: 12.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -115,7 +115,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 },
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: AppThemes.primaryGrey.withOpacity(0.1),
+                  fillColor: AppThemes.lightGrey.withOpacity(0.1),
                   label: Text(
                     "What needs to be done?",
                     style: TextStyle(color: Colors.grey[500], fontSize: 16.sp),
@@ -143,7 +143,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: AppThemes.primaryGrey.withOpacity(0.1),
+                  fillColor: AppThemes.lightGrey.withOpacity(0.1),
                   alignLabelWithHint: true,
                   label: Text(
                     "Add a note (optional)",
@@ -342,7 +342,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                     vertical: 16.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppThemes.primaryGrey.withOpacity(0.1),
+                    color: AppThemes.lightGrey.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.grey.shade400),
                   ),

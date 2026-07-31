@@ -57,7 +57,6 @@ class _StatsScreenState extends State<StatsScreen> {
     final int percentInt = (duePercent * 100).toInt();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
         children: [
           Container(
@@ -142,8 +141,9 @@ class _StatsScreenState extends State<StatsScreen> {
                               percent: duePercent,
                               circularStrokeCap: CircularStrokeCap.round,
                               progressColor: AppThemes.primaryPurple,
-                              backgroundColor: AppThemes.primaryGrey
-                                  .withOpacity(0.2),
+                              backgroundColor: AppThemes.lightGrey.withOpacity(
+                                0.2,
+                              ),
                             ),
                             SizedBox(width: 24.w),
                             Column(

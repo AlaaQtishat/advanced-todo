@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppThemes {
   static final Color primaryPurple = Color(0xFF7F22FE);
-  static final Color primaryGrey = Color(0xFF62748E);
+  static final Color lightGrey = Colors.grey.shade300;
+  static final Color darkGrey = Colors.grey.shade700;
   static final Color highPriorityRed = Color(0xFFFB2C36);
   static final Color mediumPriorityOrange = Color(0xFFFE9A00);
   static final Color lowPriorityBlue = Colors.cyan[700]!;
@@ -15,7 +16,7 @@ class AppThemes {
 
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color(0xFFEAEAEA).withOpacity(0.95),
+    scaffoldBackgroundColor: Color(0xFFF8FAFC),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: Colors.black45,
@@ -35,11 +36,18 @@ class AppThemes {
         foregroundColor: Colors.black87,
       ),
     ),
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(
+        foregroundColor: darkGrey,
+        backgroundColor: Color(0xFFF1F5F9),
+        side: BorderSide(color: Colors.transparent),
+      ),
+    ),
   );
 
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xFF161622),
+    scaffoldBackgroundColor: const Color(0xFF09090B),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: Colors.white70,
@@ -51,11 +59,18 @@ class AppThemes {
       bodySmall: TextStyle(color: Colors.white),
       bodyMedium: TextStyle(color: Colors.white),
     ),
-    cardColor: Color(0xFF25273D),
+    cardColor: Color(0xFF18181B),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF171717),
         foregroundColor: Colors.white,
+      ),
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(
+        foregroundColor: lightGrey,
+        backgroundColor: Color(0xFF1C1C1E),
+        side: BorderSide(color: lightGrey),
       ),
     ),
   );

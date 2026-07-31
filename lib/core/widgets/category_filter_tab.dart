@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/core/widgets/customized_elevated_button.dart';
 
 class CategoryFilterTab extends StatelessWidget {
@@ -10,6 +11,8 @@ class CategoryFilterTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     final currentCategory = context.watch<TaskProvider>().categoryFilter;
     return SizedBox(
       height: 33.h,
@@ -22,10 +25,14 @@ class CategoryFilterTab extends StatelessWidget {
               onPressed: () {
                 context.read<TaskProvider>().setCategoryFilter("All");
               },
-              color: currentCategory == "All" ? AppThemes.primaryPurple : null,
+              color: currentCategory == "All"
+                  ? AppThemes.primaryPurple
+                  : theme.cardColor,
               textColor: currentCategory == "All" ? Colors.white : null,
               fontSize: 14.sp,
-              borderColor: Colors.black26,
+              borderColor: currentCategory == "All"
+                  ? Colors.transparent
+                  : AppThemes.lightGrey,
             ),
           ),
           SizedBox(width: 10.w),
@@ -38,8 +45,10 @@ class CategoryFilterTab extends StatelessWidget {
               },
               color: currentCategory == "Work"
                   ? AppThemes.primaryPurple
-                  : Colors.transparent,
-              borderColor: Colors.black26,
+                  : theme.cardColor,
+              borderColor: currentCategory == "Work"
+                  ? Colors.transparent
+                  : AppThemes.lightGrey,
               textColor: currentCategory == "Work" ? Colors.white : null,
             ),
           ),
@@ -53,8 +62,10 @@ class CategoryFilterTab extends StatelessWidget {
               },
               color: currentCategory == "Personal"
                   ? AppThemes.primaryPurple
-                  : null,
-              borderColor: Colors.black26,
+                  : theme.cardColor,
+              borderColor: currentCategory == "Personal"
+                  ? Colors.transparent
+                  : AppThemes.lightGrey,
               textColor: currentCategory == "Personal" ? Colors.white : null,
             ),
           ),
@@ -68,8 +79,10 @@ class CategoryFilterTab extends StatelessWidget {
               },
               color: currentCategory == "Shopping"
                   ? AppThemes.primaryPurple
-                  : null,
-              borderColor: Colors.black26,
+                  : theme.cardColor,
+              borderColor: currentCategory == "Shopping"
+                  ? Colors.transparent
+                  : AppThemes.lightGrey,
               textColor: currentCategory == "Shopping" ? Colors.white : null,
             ),
           ),
@@ -83,8 +96,10 @@ class CategoryFilterTab extends StatelessWidget {
               },
               color: currentCategory == "Study"
                   ? AppThemes.primaryPurple
-                  : Colors.transparent,
-              borderColor: Colors.black26,
+                  : theme.cardColor,
+              borderColor: currentCategory == "Study"
+                  ? Colors.transparent
+                  : AppThemes.lightGrey,
               textColor: currentCategory == "Study" ? Colors.white : null,
             ),
           ),

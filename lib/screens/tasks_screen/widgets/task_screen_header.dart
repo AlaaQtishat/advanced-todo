@@ -15,12 +15,16 @@ class TaskScreenHeader extends StatelessWidget {
   final formattedDate = DateFormat('EEE, MMMM d').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       height: 200.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.read<ThemeProvider>().isDarkMode
+            ? theme.scaffoldBackgroundColor
+            : Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -63,20 +67,10 @@ class TaskScreenHeader extends StatelessWidget {
                     Consumer<ThemeProvider>(
                       builder: (context, themeProvider, child) {
                         return IconButton(
-                          style: IconButton.styleFrom(
-                            backgroundColor: Color(0xFFF1F5F9),
-                          ),
+                          style: IconButton.styleFrom(),
                           icon: themeProvider.isDarkMode
-                              ? Icon(
-                                  Icons.wb_sunny_outlined,
-                                  size: 24.sp,
-                                  color: AppThemes.primaryGrey,
-                                )
-                              : Icon(
-                                  Icons.bedtime_outlined,
-                                  size: 24.sp,
-                                  color: AppThemes.primaryGrey,
-                                ),
+                              ? Icon(Icons.wb_sunny_outlined, size: 24.sp)
+                              : Icon(Icons.bedtime_outlined, size: 24.sp),
                           onPressed: () {
                             themeProvider.toggleTheme();
                           },
@@ -86,8 +80,7 @@ class TaskScreenHeader extends StatelessWidget {
                     SizedBox(width: 8.w),
                     PopupMenuButton<String>(
                       position: PopupMenuPosition.under,
-
-                      color: Colors.white,
+                      color: theme.cardColor,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -138,16 +131,13 @@ class TaskScreenHeader extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.check_circle_outline,
-                                color: const Color(0xFF00BFA5),
+                                color: AppThemes.primaryGreen,
                                 size: 22.sp,
                               ),
                               SizedBox(width: 12),
                               Text(
                                 'Mark all complete',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: const Color(0xFF2C3E50),
-                                ),
+                                style: TextStyle(fontSize: 16.sp),
                               ),
                             ],
                           ),
@@ -164,10 +154,7 @@ class TaskScreenHeader extends StatelessWidget {
                               SizedBox(width: 12),
                               Text(
                                 'Delete done (${context.read<TaskProvider>().doneTasks.length})',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: const Color(0xFF2C3E50),
-                                ),
+                                style: TextStyle(fontSize: 16.sp),
                               ),
                             ],
                           ),
@@ -175,15 +162,23 @@ class TaskScreenHeader extends StatelessWidget {
                       ],
 
                       child: Container(
-                        padding: EdgeInsets.all(11.w),
+                        padding: EdgeInsets.all(10.w),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1F5F9),
+                          border: isDark
+                              ? Border.all(
+                                  color: AppThemes.lightGrey,
+                                  width: 1.5,
+                                )
+                              : Border.all(color: Colors.transparent),
+                          color: isDark ? Color(0xFF1C1C1E) : Color(0xFFF1F5F9),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.check_box_outlined,
                           size: 24.sp,
-                          color: AppThemes.primaryGrey,
+                          color: isDark
+                              ? AppThemes.lightGrey
+                              : AppThemes.darkGrey,
                         ),
                       ),
                     ),
