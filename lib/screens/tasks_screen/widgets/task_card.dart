@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
+import 'package:todo/core/widgets/customized_alert_dialog.dart';
 import 'package:todo/screens/tasks_screen/widgets/card_action_button.dart';
 
 class TaskCard extends StatefulWidget {
@@ -119,6 +121,8 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Opacity(
       opacity: widget.isCompleted ? 0.5 : 1.0,
       child: Container(
@@ -126,7 +130,7 @@ class _TaskCardState extends State<TaskCard> {
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Color(0xFFDDD6FF), width: 1.0)),
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
@@ -150,6 +154,7 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Widget buildNormalMode() {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     final isSoon = context.read<TaskProvider>().isDueSoon(widget.dueDate);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +182,9 @@ class _TaskCardState extends State<TaskCard> {
                 shape: BoxShape.circle,
                 color: widget.isCompleted
                     ? const Color(0xFF00BC7D)
-                    : AppThemes.primaryGrey.withOpacity(0.1),
+                    : isDark
+                    ? AppThemes.lightGrey.withOpacity(0.1)
+                    : AppThemes.darkGrey.withOpacity(0.08),
               ),
               child: widget.isCompleted
                   ? Icon(Icons.check, size: 18.sp, color: Colors.white)
@@ -243,7 +250,7 @@ class _TaskCardState extends State<TaskCard> {
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blueGrey.shade400,
+                      color: isDark ? AppThemes.lightGrey : AppThemes.darkGrey,
                     ),
                   ),
 
@@ -258,10 +265,12 @@ class _TaskCardState extends State<TaskCard> {
                             size: 14.sp,
 
                             color: widget.isCompleted
-                                ? Colors.blueGrey.shade400
+                                ? Colors.grey
                                 : (isSoon
                                       ? Colors.deepOrange.shade400
-                                      : Colors.blueGrey.shade400),
+                                      : isDark
+                                      ? AppThemes.lightGrey.withOpacity(0.5)
+                                      : AppThemes.darkGrey.withOpacity(0.5)),
                           ),
                           SizedBox(width: 4.w),
                           Text(
@@ -271,10 +280,12 @@ class _TaskCardState extends State<TaskCard> {
                               fontWeight: FontWeight.bold,
 
                               color: widget.isCompleted
-                                  ? Colors.blueGrey.shade300
+                                  ? Colors.grey
                                   : (isSoon
                                         ? Colors.deepOrange.shade400
-                                        : Colors.blueGrey.shade400),
+                                        : isDark
+                                        ? AppThemes.lightGrey.withOpacity(0.5)
+                                        : AppThemes.darkGrey.withOpacity(0.5)),
                             ),
                           ),
                         ],
@@ -295,7 +306,7 @@ class _TaskCardState extends State<TaskCard> {
                       : TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: Colors.blueGrey.shade400,
+                    color: isDark ? AppThemes.lightGrey : AppThemes.darkGrey,
                     height: 1.4,
                   ),
                 ),
@@ -344,42 +355,15 @@ class _TaskCardState extends State<TaskCard> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: Theme.of(context).cardColor,
-                    title: Text(
-                      "Delete Task",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    content: Text(
-                      "Are you sure you want to permanently delete this task?",
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("Cancel"),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          backgroundColor: Colors.red,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          widget.onDelete();
-                        },
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                  builder: (context) => CustomizedAlertDialog(
+                    title: "Delete Task",
+                    content:
+                        "Are you sure you want to permanently delete this task?",
+                    onPressed: () {
+                      Navigator.pop(context);
+                      widget.onDelete();
+                    },
+                    buttonColor: Colors.red,
                   ),
                 );
               },
@@ -413,7 +397,7 @@ class _TaskCardState extends State<TaskCard> {
             padding: EdgeInsets.only(top: 4.h, right: 12.w),
             child: Icon(
               Icons.drag_indicator,
-              color: Colors.grey.shade300,
+              color: Colors.grey.shade400,
               size: 30.sp,
             ),
           ),
@@ -426,7 +410,7 @@ class _TaskCardState extends State<TaskCard> {
             height: 32.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppThemes.primaryGrey.withOpacity(0.1),
+              color: AppThemes.lightGrey.withOpacity(0.1),
             ),
           ),
         ),
@@ -443,7 +427,7 @@ class _TaskCardState extends State<TaskCard> {
                     vertical: 12.h,
                   ),
                   filled: true,
-                  fillColor: AppThemes.primaryGrey.withOpacity(0.1),
+                  fillColor: AppThemes.lightGrey.withOpacity(0.1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide.none,
@@ -497,7 +481,7 @@ class _TaskCardState extends State<TaskCard> {
                       });
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: AppThemes.primaryGrey.withOpacity(0.1),
+                      backgroundColor: AppThemes.lightGrey.withOpacity(0.1),
                       foregroundColor: Colors.blueGrey.shade400,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
@@ -507,10 +491,11 @@ class _TaskCardState extends State<TaskCard> {
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
-                    icon: Icon(Icons.close, size: 18.sp),
+                    icon: Icon(Icons.close, size: 18.sp, color: Colors.grey),
                     label: Text(
                       "Cancel",
                       style: TextStyle(
+                        color: Colors.grey,
                         fontWeight: FontWeight.bold,
                         fontSize: 14.sp,
                       ),

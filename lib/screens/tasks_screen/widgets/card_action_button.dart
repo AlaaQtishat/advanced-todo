@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 
 class CardActionButton extends StatelessWidget {
   final IconData icon;
@@ -18,8 +20,14 @@ class CardActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? AppThemes.primaryGrey.withOpacity(0.08);
-    final iconclr = iconColor ?? AppThemes.primaryGrey;
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final bgColor =
+        backgroundColor ??
+        (isDark
+            ? AppThemes.lightGrey.withOpacity(0.08)
+            : AppThemes.darkGrey.withOpacity(0.05));
+    final iconclr =
+        iconColor ?? (isDark ? AppThemes.lightGrey : AppThemes.darkGrey);
     return GestureDetector(
       onTap: onTap,
       child: Container(

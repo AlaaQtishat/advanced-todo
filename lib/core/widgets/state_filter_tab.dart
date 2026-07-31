@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/core/widgets/customized_elevated_button.dart';
 
 class StateFilterTab extends StatelessWidget {
@@ -10,12 +11,14 @@ class StateFilterTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     final currentStatus = context.watch<TaskProvider>().statusFilter;
     return Container(
       width: double.infinity.w,
       height: 50.h,
       decoration: BoxDecoration(
-        color: Color(0xFFF1F5F9),
+        color: isDark ? theme.cardColor : Color(0xFFF1F5F9),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -32,11 +35,15 @@ class StateFilterTab extends StatelessWidget {
                   context.read<TaskProvider>().setStatusFilter("All");
                 },
                 color: currentStatus == "All"
-                    ? Colors.white
+                    ? isDark
+                          ? AppThemes.primaryPurple
+                          : Colors.white
                     : Colors.transparent,
                 textColor: currentStatus == "All"
-                    ? AppThemes.primaryPurple
-                    : AppThemes.primaryGrey,
+                    ? isDark
+                          ? Colors.white
+                          : AppThemes.primaryPurple
+                    : (isDark ? AppThemes.lightGrey : AppThemes.darkGrey),
                 isSelected: currentStatus == "All",
               ),
             ),
@@ -50,11 +57,15 @@ class StateFilterTab extends StatelessWidget {
                   context.read<TaskProvider>().setStatusFilter("Active");
                 },
                 color: currentStatus == "Active"
-                    ? Colors.white
+                    ? isDark
+                          ? AppThemes.primaryPurple
+                          : Colors.white
                     : Colors.transparent,
                 textColor: currentStatus == "Active"
-                    ? AppThemes.primaryPurple
-                    : AppThemes.primaryGrey,
+                    ? isDark
+                          ? Colors.white
+                          : AppThemes.primaryPurple
+                    : (isDark ? AppThemes.lightGrey : AppThemes.darkGrey),
                 isSelected: currentStatus == "Active",
               ),
             ),
@@ -68,11 +79,15 @@ class StateFilterTab extends StatelessWidget {
                   context.read<TaskProvider>().setStatusFilter("Done");
                 },
                 color: currentStatus == "Done"
-                    ? Colors.white
+                    ? isDark
+                          ? AppThemes.primaryPurple
+                          : Colors.white
                     : Colors.transparent,
                 textColor: currentStatus == "Done"
-                    ? AppThemes.primaryPurple
-                    : AppThemes.primaryGrey,
+                    ? isDark
+                          ? Colors.white
+                          : AppThemes.primaryPurple
+                    : (isDark ? AppThemes.lightGrey : AppThemes.darkGrey),
                 isSelected: currentStatus == "Done",
               ),
             ),

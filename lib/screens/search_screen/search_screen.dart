@@ -92,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           },
                         ),
                         filled: true,
-                        fillColor: AppThemes.primaryGrey.withOpacity(0.1),
+                        fillColor: AppThemes.lightGrey.withOpacity(0.1),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: Colors.transparent,

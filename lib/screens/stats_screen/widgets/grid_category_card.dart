@@ -16,7 +16,7 @@ class GridCategoryCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: AppThemes.primaryGrey.withOpacity(0.1),
+        color: AppThemes.lightGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -32,7 +32,7 @@ class GridCategoryCard extends StatelessWidget {
             "$taskCount tasks",
             style: TextStyle(
               fontSize: 13.sp,
-              color: AppThemes.primaryGrey,
+              color: AppThemes.lightGrey,
               fontWeight: FontWeight.w500,
             ),
           ),
