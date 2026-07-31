@@ -139,12 +139,14 @@ class _SearchScreenState extends State<SearchScreen> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 20.h),
           Icon(Icons.search_rounded, size: 80.sp, color: Colors.grey),
           SizedBox(height: 20.h),
           Text(
             "Type to search your tasks",
             style: TextStyle(fontSize: 16.sp, color: Colors.grey),
           ),
+          SizedBox(height: 160.h),
         ],
       );
     }
@@ -153,12 +155,14 @@ class _SearchScreenState extends State<SearchScreen> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 20.h),
           Icon(Icons.sentiment_dissatisfied, size: 80.sp, color: Colors.grey),
           SizedBox(height: 20.h),
           Text(
             "No tasks found for \"$searchQuery\"",
             style: TextStyle(fontSize: 16.sp, color: Colors.grey),
           ),
+          SizedBox(height: 160.h),
         ],
       );
     }
