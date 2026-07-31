@@ -6,7 +6,7 @@ class TaskProvider extends ChangeNotifier {
   List<TaskModel> _globalTasks = [];
   String _statusFilter = "All";
   String _categoryFilter = "All";
-
+  int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
   String get statusFilter => _statusFilter;
   String get categoryFilter => _categoryFilter;
 
