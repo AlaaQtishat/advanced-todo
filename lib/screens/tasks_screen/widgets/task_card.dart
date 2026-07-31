@@ -144,12 +144,13 @@ class _TaskCardState extends State<TaskCard> {
             ),
           ],
         ),
-        child: isEditing ? buildEditMode() : buildViewMode(),
+        child: isEditing ? buildEditMode() : buildNormalMode(),
       ),
     );
   }
 
-  Widget buildViewMode() {
+  Widget buildNormalMode() {
+    final isSoon = context.read<TaskProvider>().isDueSoon(widget.dueDate);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -255,9 +256,12 @@ class _TaskCardState extends State<TaskCard> {
                           Icon(
                             Icons.calendar_today_outlined,
                             size: 14.sp,
+
                             color: widget.isCompleted
                                 ? Colors.blueGrey.shade400
-                                : Colors.deepOrange.shade400,
+                                : (isSoon
+                                      ? Colors.deepOrange.shade400
+                                      : Colors.blueGrey.shade400),
                           ),
                           SizedBox(width: 4.w),
                           Text(
@@ -265,9 +269,12 @@ class _TaskCardState extends State<TaskCard> {
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
+
                               color: widget.isCompleted
                                   ? Colors.blueGrey.shade300
-                                  : Colors.deepOrange.shade400,
+                                  : (isSoon
+                                        ? Colors.deepOrange.shade400
+                                        : Colors.blueGrey.shade400),
                             ),
                           ),
                         ],
