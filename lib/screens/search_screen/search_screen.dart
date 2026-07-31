@@ -55,77 +55,72 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ],
             ),
-            child: Column(
-              children: [
-                SizedBox(height: statusBarHeight),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Search",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+            child: Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: statusBarHeight),
+                  Text(
+                    "Search",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.sp,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        searchQuery = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: 24.sp,
-                          color: Colors.grey,
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.w, top: 16.h),
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            size: 24.sp,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            searchController.clear();
+                            setState(() {
+                              searchQuery = '';
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          searchController.clear();
-                          setState(() {
-                            searchQuery = '';
-                          });
-                        },
-                      ),
-                      filled: true,
-                      fillColor: AppThemes.primaryGrey.withOpacity(0.1),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(24.r),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(24.r),
-                      ),
-                      hintText: "Search tasks...",
-                      contentPadding: EdgeInsets.only(
-                        left: 40.w,
-                        top: 16.h,
-                        bottom: 16.h,
-                      ),
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20.sp,
+                        filled: true,
+                        fillColor: AppThemes.primaryGrey.withOpacity(0.1),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: BorderRadius.circular(24.r),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: BorderRadius.circular(24.r),
+                        ),
+                        hintText: "Search tasks...",
+                        contentPadding: EdgeInsets.only(
+                          left: 40.w,
+                          top: 16.h,
+                          bottom: 16.h,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20.sp,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Expanded(child: buildBodyContent(searchResults)),

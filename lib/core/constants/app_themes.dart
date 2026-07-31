@@ -6,7 +6,7 @@ class AppThemes {
   static final Color highPriorityRed = Color(0xFFFB2C36);
   static final Color mediumPriorityOrange = Color(0xFFFE9A00);
   static final Color lowPriorityBlue = Colors.cyan[700]!;
-
+  static final Color primaryGreen = Color(0xFF009966);
   static final LinearGradient gradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
