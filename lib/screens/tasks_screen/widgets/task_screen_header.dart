@@ -6,6 +6,7 @@ import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/core/widgets/category_filter_tab.dart';
+import 'package:todo/core/widgets/customized_alert_dialog.dart';
 import 'package:todo/core/widgets/state_filter_tab.dart';
 
 class TaskScreenHeader extends StatelessWidget {
@@ -94,37 +95,36 @@ class TaskScreenHeader extends StatelessWidget {
 
                       onSelected: (value) {
                         if (value == 'mark_all') {
-                          context.read<TaskProvider>().markAllAsCompleted();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CustomizedAlertDialog(
+                                title: "Mark all complete",
+                                content:
+                                    "Are you sure you want to mark all tasks as complete?",
+                                onPressed: () {
+                                  context
+                                      .read<TaskProvider>()
+                                      .markAllAsCompleted();
+                                },
+                                buttonColor: AppThemes.primaryGreen,
+                              );
+                            },
+                          );
                         } else if (value == 'delete_done') {
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.white,
-                                title: Text('Delete Completed Tasks'),
-                                content: Text(
-                                  'Are you sure you want to delete all completed tasks? This action cannot be undone.',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      context
-                                          .read<TaskProvider>()
-                                          .clearCompletedTasks();
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                ],
+                              return CustomizedAlertDialog(
+                                title: "Delete completed",
+                                content:
+                                    "Are you sure you want to delete all completed tasks? This action cannot be undone.",
+                                onPressed: () {
+                                  context
+                                      .read<TaskProvider>()
+                                      .clearCompletedTasks();
+                                },
+                                buttonColor: AppThemes.highPriorityRed,
                               );
                             },
                           );
