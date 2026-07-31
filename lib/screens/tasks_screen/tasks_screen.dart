@@ -26,7 +26,6 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: CustomizedFloatingButton(),
       backgroundColor: Color(0xFFF8FAFC),
       body: Column(
         children: [
