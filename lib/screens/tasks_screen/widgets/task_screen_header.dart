@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
-import 'package:todo/core/widgets/category_filter_tab.dart';
+import 'package:todo/screens/tasks_screen/widgets/category_filter_tab.dart';
 import 'package:todo/core/widgets/customized_alert_dialog.dart';
-import 'package:todo/core/widgets/state_filter_tab.dart';
+import 'package:todo/screens/tasks_screen/widgets/state_filter_tab.dart';
 
 class TaskScreenHeader extends StatelessWidget {
   TaskScreenHeader({super.key});
@@ -18,6 +18,7 @@ class TaskScreenHeader extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = context.watch<ThemeProvider>().isDarkMode;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final totalDoneCount = context.watch<TaskProvider>().totalDoneCount;
     return Container(
       height: 200.h,
       width: double.infinity,
@@ -150,7 +151,7 @@ class TaskScreenHeader extends StatelessWidget {
                               ),
                               SizedBox(width: 12),
                               Text(
-                                'Delete done (${context.read<TaskProvider>().doneTasks.length})',
+                                'Delete done ($totalDoneCount)',
                                 style: TextStyle(fontSize: 16.sp),
                               ),
                             ],

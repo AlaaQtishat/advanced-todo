@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
@@ -27,12 +26,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.read<ThemeProvider>().isDarkMode;
+    final isDark = context.watch()<ThemeProvider>().isDarkMode;
     final theme = Theme.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final allTasks = Provider.of<TaskProvider>(context).allTasks;
 
     List<TaskModel> searchResults = [];
+
     if (searchQuery.trim().isNotEmpty) {
       searchResults = allTasks.where((task) {
         final titleLower = task.taskTitle.toLowerCase();
@@ -185,14 +185,7 @@ class _SearchScreenState extends State<SearchScreen> {
             task.taskTitle,
           ),
           index: index,
-          taskTitle: task.taskTitle,
-          description: task.description,
-          isCompleted: task.isCompleted,
-          isPinned: task.isPinned,
-          priority: task.priority,
-          category: task.category,
-          createdAt: task.createdAt,
-          dueDate: task.dueDate,
+          task: task,
           onToggleComplete: () =>
               context.read<TaskProvider>().toggleTask(task, !task.isCompleted),
           onPin: () => context.read<TaskProvider>().togglePin(task),

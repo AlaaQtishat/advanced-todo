@@ -18,46 +18,27 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<TaskProvider>();
     final isDark = context.watch<ThemeProvider>().isDarkMode;
     final theme = Theme.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final activeTasksCount = context.watch<TaskProvider>().activeTasks.length;
-    final doneTasksCount = context.watch<TaskProvider>().doneTasks.length;
-    final allTasksCount = context.watch<TaskProvider>().allTasks.length;
-    final pinnedCount = context.watch<TaskProvider>().pinnedCount;
-    final int dueSoonCount = context.watch<TaskProvider>().soonTasks.length;
-    final int highPriorityCount = context
-        .watch<TaskProvider>()
-        .highPriorityCount;
-    final int mediumPriorityCount = context
-        .watch<TaskProvider>()
-        .mediumPriorityCount;
-    final int lowPriorityCount = context.watch<TaskProvider>().lowPriorityCount;
-    final int workCategoryCount = context
-        .watch<TaskProvider>()
-        .workCategoryCount;
-    final int personalCategoryCount = context
-        .watch<TaskProvider>()
-        .personalCategoryCount;
-    final int shoppingCategoryCount = context
-        .watch<TaskProvider>()
-        .shoppingCategoryCount;
-    final int studyCategoryCount = context
-        .watch<TaskProvider>()
-        .studyCategoryCount;
-    final double duePercent = allTasksCount == 0
-        ? 0.0
-        : doneTasksCount / allTasksCount;
-    final double highPriorityPercent = allTasksCount == 0
-        ? 0.0
-        : highPriorityCount / allTasksCount;
-    final double mediumPriorityPercent = allTasksCount == 0
-        ? 0.0
-        : mediumPriorityCount / allTasksCount;
-    final double lowPriorityPercent = allTasksCount == 0
-        ? 0.0
-        : lowPriorityCount / allTasksCount;
-    final int percentInt = (duePercent * 100).toInt();
+    final activeTasksCount = provider.totalRemainingCount;
+    final doneTasksCount = provider.totalDoneCount;
+    final allTasksCount = provider.allTasks.length;
+    final pinnedCount = provider.pinnedCount;
+    final int dueSoonCount = provider.totalDueSoonCount;
+    final int highPriorityCount = provider.highPriorityCount;
+    final int mediumPriorityCount = provider.mediumPriorityCount;
+    final int lowPriorityCount = provider.lowPriorityCount;
+    final int workCategoryCount = provider.workCategoryCount;
+    final int personalCategoryCount = provider.personalCategoryCount;
+    final int shoppingCategoryCount = provider.shoppingCategoryCount;
+    final int studyCategoryCount = provider.studyCategoryCount;
+    final double completionPercent = provider.completionPercent;
+    final double highPriorityPercent = provider.highPriorityPercent;
+    final double mediumPriorityPercent = provider.mediumPriorityPercent;
+    final double lowPriorityPercent = provider.lowPriorityPercent;
+    final int percentInt = provider.percentInt;
 
     return Scaffold(
       body: Column(
@@ -151,7 +132,7 @@ class _StatsScreenState extends State<StatsScreen> {
                             CircularPercentIndicator(
                               radius: 45.0,
                               lineWidth: 10.0,
-                              percent: duePercent,
+                              percent: completionPercent,
                               circularStrokeCap: CircularStrokeCap.round,
                               progressColor: AppThemes.primaryPurple,
                               backgroundColor: AppThemes.lightGrey.withOpacity(

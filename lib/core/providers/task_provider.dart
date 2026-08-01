@@ -10,6 +10,7 @@ class TaskProvider extends ChangeNotifier {
   // Getters
   String get statusFilter => _statusFilter;
   String get categoryFilter => _categoryFilter;
+
   List<TaskModel> get allTasks => _globalTasks;
   List<TaskModel> get activeTasks {
     if (_statusFilter == "Done") return [];
@@ -44,8 +45,10 @@ class TaskProvider extends ChangeNotifier {
     return done;
   }
 
-  List<TaskModel> get soonTasks {
-    return activeTasks.where((task) => isDueSoon(task.dueDate)).toList();
+  int get totalDueSoonCount {
+    return _globalTasks
+        .where((task) => !task.isCompleted && isDueSoon(task.dueDate))
+        .length;
   }
 
   int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
@@ -55,14 +58,62 @@ class TaskProvider extends ChangeNotifier {
       _globalTasks.where((task) => task.priority == "Medium").length;
   int get lowPriorityCount =>
       _globalTasks.where((task) => task.priority == "Low").length;
-  int get workCategoryCount =>
-      _globalTasks.where((task) => task.category == "Work").length;
-  int get personalCategoryCount =>
-      _globalTasks.where((task) => task.category == "Personal").length;
-  int get shoppingCategoryCount =>
-      _globalTasks.where((task) => task.category == "Shopping").length;
-  int get studyCategoryCount =>
-      _globalTasks.where((task) => task.category == "Study").length;
+  int get workCategoryCount => _globalTasks
+      .where((task) => task.category == "Work" && !task.isCompleted)
+      .length;
+  int get personalCategoryCount => _globalTasks
+      .where((task) => task.category == "Personal" && !task.isCompleted)
+      .length;
+  int get shoppingCategoryCount => _globalTasks
+      .where((task) => task.category == "Shopping" && !task.isCompleted)
+      .length;
+  int get studyCategoryCount => _globalTasks
+      .where((task) => task.category == "Study" && !task.isCompleted)
+      .length;
+
+  double get completionPercent {
+    final allTasksCount = _globalTasks.length;
+    if (allTasksCount == 0) return 0.0;
+
+    final doneTasksTotal = _globalTasks
+        .where((task) => task.isCompleted)
+        .length;
+
+    return doneTasksTotal / allTasksCount;
+  }
+
+  int get percentInt {
+    return (completionPercent * 100).toInt();
+  }
+
+  double get highPriorityPercent {
+    final allTasksCount = _globalTasks.length;
+    if (allTasksCount == 0) return 0.0;
+
+    return highPriorityCount / allTasksCount;
+  }
+
+  double get mediumPriorityPercent {
+    final allTasksCount = _globalTasks.length;
+    if (allTasksCount == 0) return 0.0;
+
+    return mediumPriorityCount / allTasksCount;
+  }
+
+  double get lowPriorityPercent {
+    final allTasksCount = _globalTasks.length;
+    if (allTasksCount == 0) return 0.0;
+
+    return lowPriorityCount / allTasksCount;
+  }
+
+  int get totalRemainingCount {
+    return _globalTasks.where((task) => !task.isCompleted).length;
+  }
+
+  int get totalDoneCount {
+    return _globalTasks.where((task) => task.isCompleted).length;
+  }
 
   // Setters
   void setStatusFilter(String status) {

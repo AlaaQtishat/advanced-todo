@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
+import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/core/widgets/customized_alert_dialog.dart';
@@ -9,34 +10,20 @@ import 'package:todo/screens/tasks_screen/widgets/card_action_button.dart';
 
 class TaskCard extends StatefulWidget {
   final int index;
-  final String taskTitle;
-  final String description;
-  final bool isCompleted;
-  final bool isPinned;
-  final String priority;
-  final String category;
-  final DateTime createdAt;
   final VoidCallback? onToggleComplete;
   final VoidCallback? onPin;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
-  final DateTime? dueDate;
+  final TaskModel task;
 
   const TaskCard({
     super.key,
     required this.index,
-    required this.taskTitle,
-    required this.description,
-    required this.isCompleted,
-    required this.isPinned,
-    required this.priority,
-    required this.category,
-    required this.createdAt,
     this.onToggleComplete,
     this.onPin,
     required this.onEdit,
     required this.onDelete,
-    this.dueDate,
+    required this.task,
   });
 
   @override
@@ -44,24 +31,23 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
-  late TextEditingController _editTitleController;
+  late TextEditingController editTitleController;
   bool isEditing = false;
   bool isExpanded = false;
 
   @override
   void initState() {
     super.initState();
-
-    _editTitleController = TextEditingController(text: widget.taskTitle);
+    editTitleController = TextEditingController(text: widget.task.taskTitle);
   }
 
   @override
   void dispose() {
-    _editTitleController.dispose();
+    editTitleController.dispose();
     super.dispose();
   }
 
-  priorityColor(String priority) {
+  Color priorityColor(String priority) {
     switch (priority) {
       case "High":
         return AppThemes.highPriorityRed;
@@ -124,7 +110,7 @@ class _TaskCardState extends State<TaskCard> {
     final theme = Theme.of(context);
     final isDark = context.watch<ThemeProvider>().isDarkMode;
     return Opacity(
-      opacity: widget.isCompleted ? 0.5 : 1.0,
+      opacity: widget.task.isCompleted ? 0.5 : 1.0,
       child: Container(
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.w),
@@ -166,7 +152,7 @@ class _TaskCardState extends State<TaskCard> {
 
   Widget buildNormalMode() {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
-    final isSoon = context.read<TaskProvider>().isDueSoon(widget.dueDate);
+    final isSoon = context.read<TaskProvider>().isDueSoon(widget.task.dueDate);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -193,13 +179,13 @@ class _TaskCardState extends State<TaskCard> {
               height: 32.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: widget.isCompleted
+                color: widget.task.isCompleted
                     ? const Color(0xFF00BC7D)
                     : isDark
                     ? AppThemes.lightGrey.withOpacity(0.2)
                     : AppThemes.darkGrey.withOpacity(0.08),
               ),
-              child: widget.isCompleted
+              child: widget.task.isCompleted
                   ? Icon(Icons.check, size: 18.sp, color: Colors.white)
                   : null,
             ),
@@ -211,11 +197,11 @@ class _TaskCardState extends State<TaskCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.taskTitle,
+                widget.task.taskTitle,
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  decoration: widget.isCompleted
+                  decoration: widget.task.isCompleted
                       ? TextDecoration.lineThrough
                       : null,
                 ),
@@ -231,10 +217,14 @@ class _TaskCardState extends State<TaskCard> {
                       vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
-                      color: widget.isCompleted
+                      color: widget.task.isCompleted
                           ? Colors.transparent
-                          : priorityColor(widget.priority).withOpacity(0.1),
-                      border: Border.all(color: priorityColor(widget.priority)),
+                          : priorityColor(
+                              widget.task.priority,
+                            ).withOpacity(0.1),
+                      border: Border.all(
+                        color: priorityColor(widget.task.priority),
+                      ),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Row(
@@ -243,13 +233,13 @@ class _TaskCardState extends State<TaskCard> {
                         Icon(
                           Icons.circle,
                           size: 8.sp,
-                          color: priorityColor(widget.priority),
+                          color: priorityColor(widget.task.priority),
                         ),
                         SizedBox(width: 6.w),
                         Text(
-                          widget.priority,
+                          widget.task.priority,
                           style: TextStyle(
-                            color: priorityColor(widget.priority),
+                            color: priorityColor(widget.task.priority),
                             fontWeight: FontWeight.bold,
                             fontSize: 12.sp,
                           ),
@@ -259,7 +249,7 @@ class _TaskCardState extends State<TaskCard> {
                   ),
                   SizedBox(width: 8.w),
                   Text(
-                    widget.category,
+                    widget.task.category,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
@@ -267,7 +257,7 @@ class _TaskCardState extends State<TaskCard> {
                     ),
                   ),
 
-                  if (widget.dueDate != null) ...[
+                  if (widget.task.dueDate != null) ...[
                     Padding(
                       padding: EdgeInsets.only(top: 6.h, left: 8.w),
                       child: Row(
@@ -277,7 +267,7 @@ class _TaskCardState extends State<TaskCard> {
                             Icons.calendar_today_outlined,
                             size: 14.sp,
 
-                            color: widget.isCompleted
+                            color: widget.task.isCompleted
                                 ? Colors.grey
                                 : (isSoon
                                       ? Colors.deepOrange.shade400
@@ -287,12 +277,12 @@ class _TaskCardState extends State<TaskCard> {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            _formatDueDate(widget.dueDate!),
+                            _formatDueDate(widget.task.dueDate!),
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
 
-                              color: widget.isCompleted
+                              color: widget.task.isCompleted
                                   ? Colors.grey
                                   : (isSoon
                                         ? Colors.deepOrange.shade400
@@ -309,9 +299,9 @@ class _TaskCardState extends State<TaskCard> {
               ),
               SizedBox(height: 8.h),
 
-              if (widget.description.isNotEmpty) ...[
+              if (widget.task.description.isNotEmpty) ...[
                 Text(
-                  widget.description,
+                  widget.task.description,
 
                   maxLines: isExpanded ? null : 1,
                   overflow: isExpanded
@@ -326,7 +316,7 @@ class _TaskCardState extends State<TaskCard> {
                 SizedBox(height: 8.h),
               ],
               Text(
-                _formatDate(widget.createdAt),
+                _formatDate(widget.task.createdAt),
                 style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade400),
               ),
             ],
@@ -339,18 +329,18 @@ class _TaskCardState extends State<TaskCard> {
           children: [
             CardActionButton(
               icon: Icons.push_pin_outlined,
-              iconColor: widget.isPinned ? AppThemes.primaryPurple : null,
-              backgroundColor: widget.isPinned
+              iconColor: widget.task.isPinned ? AppThemes.primaryPurple : null,
+              backgroundColor: widget.task.isPinned
                   ? AppThemes.primaryPurple.withOpacity(0.08)
                   : null,
-              onTap: widget.isCompleted ? null : widget.onPin,
+              onTap: widget.task.isCompleted ? null : widget.onPin,
             ),
 
             SizedBox(height: 8.h),
             CardActionButton(
               icon: Icons.edit_outlined,
 
-              onTap: widget.isCompleted
+              onTap: widget.task.isCompleted
                   ? null
                   : () {
                       setState(() {
@@ -426,7 +416,7 @@ class _TaskCardState extends State<TaskCard> {
             height: 32.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: widget.isCompleted
+              color: widget.task.isCompleted
                   ? const Color(0xFF00BC7D)
                   : isDark
                   ? AppThemes.lightGrey.withOpacity(0.2)
@@ -440,7 +430,7 @@ class _TaskCardState extends State<TaskCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
-                controller: _editTitleController,
+                controller: editTitleController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -464,8 +454,8 @@ class _TaskCardState extends State<TaskCard> {
                   ElevatedButton.icon(
                     onPressed: () {
                       context.read<TaskProvider>().updateTaskTitle(
-                        widget.createdAt,
-                        _editTitleController.text.trim(),
+                        widget.task.createdAt,
+                        editTitleController.text.trim(),
                       );
                       setState(() {
                         isEditing = false;
@@ -498,7 +488,7 @@ class _TaskCardState extends State<TaskCard> {
                   TextButton.icon(
                     onPressed: () {
                       setState(() {
-                        _editTitleController.text = widget.taskTitle;
+                        editTitleController.text = widget.task.taskTitle;
                         isEditing = false;
                       });
                     },

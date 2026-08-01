@@ -105,8 +105,8 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                     style: IconButton.styleFrom(
                       side: BorderSide(color: Colors.transparent),
                       backgroundColor: isDark
-                          ? Colors.grey.shade800
-                          : Colors.grey.shade300,
+                          ? Color(0xFF242426)
+                          : Color(0xFFF1F5F9),
                     ),
                   ),
                 ],

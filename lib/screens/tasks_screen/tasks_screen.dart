@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
-import 'package:todo/screens/tasks_screen/widgets/customized_floating_button.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_screen_header.dart';
 import 'package:flutter/services.dart';
@@ -23,8 +22,6 @@ class _TasksScreenState extends State<TasksScreen> {
     super.initState();
   }
 
-  String category = "All";
-  String status = "All";
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
@@ -82,14 +79,8 @@ class _TasksScreenState extends State<TasksScreen> {
                                 task.taskTitle,
                               ),
                               index: index,
-                              taskTitle: task.taskTitle,
-                              description: task.description,
-                              isCompleted: task.isCompleted,
-                              isPinned: task.isPinned,
-                              priority: task.priority,
-                              category: task.category,
-                              createdAt: task.createdAt,
-                              dueDate: task.dueDate,
+                              task: task,
+
                               onToggleComplete: () =>
                                   provider.toggleTask(task, !task.isCompleted),
                               onPin: () => provider.togglePin(task),
@@ -136,14 +127,7 @@ class _TasksScreenState extends State<TasksScreen> {
                                 task.taskTitle,
                               ),
                               index: index,
-                              taskTitle: task.taskTitle,
-                              description: task.description,
-                              isCompleted: task.isCompleted,
-                              isPinned: task.isPinned,
-                              priority: task.priority,
-                              category: task.category,
-                              createdAt: task.createdAt,
-                              dueDate: task.dueDate,
+                              task: task,
                               onToggleComplete: () =>
                                   provider.toggleTask(task, !task.isCompleted),
                               onPin: () => provider.togglePin(task),
