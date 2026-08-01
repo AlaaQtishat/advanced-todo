@@ -7,9 +7,9 @@ A highly performant, feature-rich, and beautifully designed Todo application bui
 ### Light Mode & Dark Mode
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/29b7ef85-2953-4afe-b2be-9adfc282193d" width="48%" alt="Light Mode - Tasks Screen"/>
+  <img src= "https://github.com/user-attachments/assets/3d8ea58c-09b6-4023-910b-622ed5b100fb" width="48%" alt="Light Mode - Tasks Screen"/>
   &nbsp;
-  <img src="https://github.com/user-attachments/assets/3d8ea58c-09b6-4023-910b-622ed5b100fb" width="48%" alt="Dark Mode - Tasks Screen"/>
+  <img src="https://github.com/user-attachments/assets/29b7ef85-2953-4afe-b2be-9adfc282193d" width="48%" alt="Dark Mode - Tasks Screen"/>
 </p>
 
 <p align="center">
