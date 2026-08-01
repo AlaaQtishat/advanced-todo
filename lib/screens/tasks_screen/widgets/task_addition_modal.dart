@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/core/widgets/customized_outlined_button.dart';
 
 class TaskAdditionModal extends StatefulWidget {
@@ -60,6 +61,8 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -75,7 +78,9 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: AppThemes.lightGrey.withOpacity(0.5),
+                  color: isDark
+                      ? AppThemes.lightGrey.withOpacity(0.5)
+                      : AppThemes.darkGrey.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -96,15 +101,22 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.black54),
+                    icon: const Icon(Icons.close, color: Colors.grey),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.grey.shade100,
+                      side: BorderSide(color: Colors.transparent),
+                      backgroundColor: isDark
+                          ? Colors.grey.shade800
+                          : Colors.grey.shade300,
                     ),
                   ),
                 ],
               ),
             ),
-            Divider(color: AppThemes.lightGrey.withOpacity(0.5)),
+            Divider(
+              color: isDark
+                  ? AppThemes.lightGrey.withOpacity(0.5)
+                  : AppThemes.darkGrey.withOpacity(0.3),
+            ),
             SizedBox(height: 12.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -115,7 +127,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 },
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: AppThemes.lightGrey.withOpacity(0.1),
+                  fillColor: isDark ? Color(0xFF242426) : Color(0xFFF1F5F9),
                   label: Text(
                     "What needs to be done?",
                     style: TextStyle(color: Colors.grey[500], fontSize: 16.sp),
@@ -123,7 +135,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
-                      color: Colors.grey.shade400,
+                      color: isDark ? Colors.transparent : Colors.grey.shade400,
                       width: 1,
                     ),
                   ),
@@ -143,7 +155,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: AppThemes.lightGrey.withOpacity(0.1),
+                  fillColor: isDark ? Color(0xFF242426) : Color(0xFFF1F5F9),
                   alignLabelWithHint: true,
                   label: Text(
                     "Add a note (optional)",
@@ -152,7 +164,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
-                      color: Colors.grey.shade400,
+                      color: isDark ? Colors.transparent : Colors.grey.shade400,
                       width: 1,
                     ),
                   ),
@@ -172,7 +184,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   letterSpacing: 2,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black54,
+                  color: isDark ? Colors.grey.shade600 : AppThemes.darkGrey,
                 ),
               ),
             ),
@@ -233,7 +245,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   letterSpacing: 2,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black54,
+                  color: isDark ? Colors.grey.shade600 : AppThemes.darkGrey,
                 ),
               ),
             ),
@@ -326,7 +338,7 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                   letterSpacing: 2,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black54,
+                  color: isDark ? Colors.grey.shade600 : AppThemes.darkGrey,
                 ),
               ),
             ),
@@ -342,9 +354,11 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                     vertical: 16.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppThemes.lightGrey.withOpacity(0.1),
+                    color: isDark ? Color(0xFF242426) : Color(0xFFF1F5F9),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.shade400),
+                    border: Border.all(
+                      color: isDark ? Colors.transparent : Colors.grey.shade400,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -393,15 +407,19 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                 height: 60.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
-                      color: Color(0xFFDDD6FF),
+                      color: isDark
+                          ? AppThemes.lightGrey.withOpacity(0.05)
+                          : Color(0xFFDDD6FF),
                       offset: Offset(0, 4),
                       blurRadius: 6,
                       spreadRadius: -4,
                     ),
                     BoxShadow(
-                      color: Color(0xFFDDD6FF),
+                      color: isDark
+                          ? AppThemes.lightGrey.withOpacity(0.08)
+                          : Color(0xFFDDD6FF),
                       offset: Offset(0, 10),
                       blurRadius: 15,
                       spreadRadius: -3,
@@ -438,9 +456,15 @@ class _TaskAdditionModalState extends State<TaskAdditionModal> {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Task added successfully!"),
-                              backgroundColor: AppThemes.primaryPurple
-                                  .withOpacity(0.1),
+                              content: Text(
+                                "Task added successfully!",
+                                style: TextStyle(
+                                  color: isDark
+                                      ? Colors.grey
+                                      : AppThemes.darkGrey,
+                                ),
+                              ),
+                              backgroundColor: theme.cardColor,
                             ),
                           );
                         }

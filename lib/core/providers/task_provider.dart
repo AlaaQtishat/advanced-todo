@@ -6,82 +6,11 @@ class TaskProvider extends ChangeNotifier {
   List<TaskModel> _globalTasks = [];
   String _statusFilter = "All";
   String _categoryFilter = "All";
-  int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
+
+  // Getters
   String get statusFilter => _statusFilter;
   String get categoryFilter => _categoryFilter;
-  int get highPriorityCount =>
-      _globalTasks.where((task) => task.priority == "High").length;
-  int get mediumPriorityCount =>
-      _globalTasks.where((task) => task.priority == "Medium").length;
-  int get lowPriorityCount =>
-      _globalTasks.where((task) => task.priority == "Low").length;
-  int get workCategoryCount =>
-      _globalTasks.where((task) => task.category == "Work").length;
-  int get personalCategoryCount =>
-      _globalTasks.where((task) => task.category == "Personal").length;
-  int get shoppingCategoryCount =>
-      _globalTasks.where((task) => task.category == "Shopping").length;
-  int get studyCategoryCount =>
-      _globalTasks.where((task) => task.category == "Study").length;
-
-  void setStatusFilter(String status) {
-    _statusFilter = status;
-    notifyListeners();
-  }
-
-  void setCategoryFilter(String category) {
-    _categoryFilter = category;
-    notifyListeners();
-  }
-
-  bool isDueSoon(DateTime? dueDate) {
-    if (dueDate == null) return false;
-
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final due = DateTime(dueDate.year, dueDate.month, dueDate.day);
-
-    final diffDays = due.difference(today).inDays;
-
-    return diffDays <= 3;
-  }
-
-  List<TaskModel> get soonTasks {
-    return activeTasks.where((task) => isDueSoon(task.dueDate)).toList();
-  }
-
-  Future<void> loadTasks() async {
-    _globalTasks = await LocalStorage.loadTasks();
-    notifyListeners();
-  }
-
-  void addTask(TaskModel newTask) {
-    _globalTasks.insert(0, newTask);
-    _saveAndNotify();
-  }
-
-  void updateTaskTitle(DateTime createdAt, String newTitle) {
-    final index = _globalTasks.indexWhere(
-      (task) => task.createdAt == createdAt,
-    );
-    final existingTask = _globalTasks[index];
-
-    _globalTasks[index] = TaskModel(
-      taskTitle: newTitle,
-      description: existingTask.description,
-      isCompleted: existingTask.isCompleted,
-      isPinned: existingTask.isPinned,
-      priority: existingTask.priority,
-      category: existingTask.category,
-      createdAt: existingTask.createdAt,
-      dueDate: existingTask.dueDate,
-    );
-
-    _saveAndNotify();
-  }
-
   List<TaskModel> get allTasks => _globalTasks;
-
   List<TaskModel> get activeTasks {
     if (_statusFilter == "Done") return [];
 
@@ -113,6 +42,67 @@ class TaskProvider extends ChangeNotifier {
     }).toList();
 
     return done;
+  }
+
+  List<TaskModel> get soonTasks {
+    return activeTasks.where((task) => isDueSoon(task.dueDate)).toList();
+  }
+
+  int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
+  int get highPriorityCount =>
+      _globalTasks.where((task) => task.priority == "High").length;
+  int get mediumPriorityCount =>
+      _globalTasks.where((task) => task.priority == "Medium").length;
+  int get lowPriorityCount =>
+      _globalTasks.where((task) => task.priority == "Low").length;
+  int get workCategoryCount =>
+      _globalTasks.where((task) => task.category == "Work").length;
+  int get personalCategoryCount =>
+      _globalTasks.where((task) => task.category == "Personal").length;
+  int get shoppingCategoryCount =>
+      _globalTasks.where((task) => task.category == "Shopping").length;
+  int get studyCategoryCount =>
+      _globalTasks.where((task) => task.category == "Study").length;
+
+  // Setters
+  void setStatusFilter(String status) {
+    _statusFilter = status;
+    notifyListeners();
+  }
+
+  void setCategoryFilter(String category) {
+    _categoryFilter = category;
+    notifyListeners();
+  }
+
+  Future<void> loadTasks() async {
+    _globalTasks = await LocalStorage.loadTasks();
+    notifyListeners();
+  }
+
+  void addTask(TaskModel newTask) {
+    _globalTasks.insert(0, newTask);
+    _saveAndNotify();
+  }
+
+  void updateTaskTitle(DateTime createdAt, String newTitle) {
+    final index = _globalTasks.indexWhere(
+      (task) => task.createdAt == createdAt,
+    );
+    final existingTask = _globalTasks[index];
+
+    _globalTasks[index] = TaskModel(
+      taskTitle: newTitle,
+      description: existingTask.description,
+      isCompleted: existingTask.isCompleted,
+      isPinned: existingTask.isPinned,
+      priority: existingTask.priority,
+      category: existingTask.category,
+      createdAt: existingTask.createdAt,
+      dueDate: existingTask.dueDate,
+    );
+
+    _saveAndNotify();
   }
 
   void clearCompletedTasks() {
@@ -173,6 +163,18 @@ class TaskProvider extends ChangeNotifier {
       dueDate: task.dueDate,
     );
     _saveAndNotify();
+  }
+
+  bool isDueSoon(DateTime? dueDate) {
+    if (dueDate == null) return false;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final due = DateTime(dueDate.year, dueDate.month, dueDate.day);
+
+    final diffDays = due.difference(today).inDays;
+
+    return diffDays <= 3;
   }
 
   void reorderTasks(int oldIndex, int newIndex, List<TaskModel> currentList) {

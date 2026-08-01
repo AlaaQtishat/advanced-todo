@@ -17,6 +17,7 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     return Container(
       width: 64.w,
       height: 64.w,
@@ -44,7 +45,7 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            backgroundColor: Colors.white,
+            backgroundColor: theme.cardColor,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
