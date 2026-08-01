@@ -165,10 +165,7 @@ class TaskScreenHeader extends StatelessWidget {
                         padding: EdgeInsets.all(10.w),
                         decoration: BoxDecoration(
                           border: isDark
-                              ? Border.all(
-                                  color: AppThemes.lightGrey,
-                                  width: 1.5,
-                                )
+                              ? Border.all(color: Colors.grey, width: 0.4)
                               : Border.all(color: Colors.transparent),
                           color: isDark ? Color(0xFF1C1C1E) : Color(0xFFF1F5F9),
                           shape: BoxShape.circle,
@@ -176,9 +173,7 @@ class TaskScreenHeader extends StatelessWidget {
                         child: Icon(
                           Icons.check_box_outlined,
                           size: 24.sp,
-                          color: isDark
-                              ? AppThemes.lightGrey
-                              : AppThemes.darkGrey,
+                          color: isDark ? Colors.grey : AppThemes.darkGrey,
                         ),
                       ),
                     ),

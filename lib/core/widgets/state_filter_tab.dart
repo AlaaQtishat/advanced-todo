@@ -43,7 +43,7 @@ class StateFilterTab extends StatelessWidget {
                     ? isDark
                           ? Colors.white
                           : AppThemes.primaryPurple
-                    : (isDark ? AppThemes.lightGrey : AppThemes.darkGrey),
+                    : (isDark ? Colors.grey : AppThemes.darkGrey),
                 isSelected: currentStatus == "All",
               ),
             ),
@@ -65,7 +65,7 @@ class StateFilterTab extends StatelessWidget {
                     ? isDark
                           ? Colors.white
                           : AppThemes.primaryPurple
-                    : (isDark ? AppThemes.lightGrey : AppThemes.darkGrey),
+                    : (isDark ? Colors.grey : AppThemes.darkGrey),
                 isSelected: currentStatus == "Active",
               ),
             ),
@@ -87,7 +87,7 @@ class StateFilterTab extends StatelessWidget {
                     ? isDark
                           ? Colors.white
                           : AppThemes.primaryPurple
-                    : (isDark ? AppThemes.lightGrey : AppThemes.darkGrey),
+                    : (isDark ? Colors.grey : AppThemes.darkGrey),
                 isSelected: currentStatus == "Done",
               ),
             ),

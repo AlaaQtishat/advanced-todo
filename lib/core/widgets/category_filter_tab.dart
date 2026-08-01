@@ -32,6 +32,8 @@ class CategoryFilterTab extends StatelessWidget {
               fontSize: 14.sp,
               borderColor: currentCategory == "All"
                   ? Colors.transparent
+                  : isDark
+                  ? AppThemes.darkGrey
                   : AppThemes.lightGrey,
             ),
           ),
@@ -48,6 +50,8 @@ class CategoryFilterTab extends StatelessWidget {
                   : theme.cardColor,
               borderColor: currentCategory == "Work"
                   ? Colors.transparent
+                  : isDark
+                  ? AppThemes.darkGrey
                   : AppThemes.lightGrey,
               textColor: currentCategory == "Work" ? Colors.white : null,
             ),
@@ -65,6 +69,8 @@ class CategoryFilterTab extends StatelessWidget {
                   : theme.cardColor,
               borderColor: currentCategory == "Personal"
                   ? Colors.transparent
+                  : isDark
+                  ? AppThemes.darkGrey
                   : AppThemes.lightGrey,
               textColor: currentCategory == "Personal" ? Colors.white : null,
             ),
@@ -82,6 +88,8 @@ class CategoryFilterTab extends StatelessWidget {
                   : theme.cardColor,
               borderColor: currentCategory == "Shopping"
                   ? Colors.transparent
+                  : isDark
+                  ? AppThemes.darkGrey
                   : AppThemes.lightGrey,
               textColor: currentCategory == "Shopping" ? Colors.white : null,
             ),
@@ -99,6 +107,8 @@ class CategoryFilterTab extends StatelessWidget {
                   : theme.cardColor,
               borderColor: currentCategory == "Study"
                   ? Colors.transparent
+                  : isDark
+                  ? AppThemes.darkGrey
                   : AppThemes.lightGrey,
               textColor: currentCategory == "Study" ? Colors.white : null,
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_addition_modal.dart';
 
 class CustomizedFloatingButton extends StatefulWidget {
@@ -14,6 +16,7 @@ class CustomizedFloatingButton extends StatefulWidget {
 class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
   @override
   Widget build(BuildContext context) {
+    final isDark = context.read<ThemeProvider>().isDarkMode;
     return Container(
       width: 64.w,
       height: 64.w,
@@ -22,14 +25,14 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
         gradient: AppThemes.gradient,
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFC4B4FF),
+            color: isDark ? AppThemes.darkGrey : Color(0xFFC4B4FF),
             offset: const Offset(0, 4),
             blurRadius: 6,
             spreadRadius: -4,
           ),
 
           BoxShadow(
-            color: const Color(0xFFC4B4FF),
+            color: isDark ? Colors.white24 : Color(0xFFC4B4FF),
             offset: const Offset(0, 10),
             blurRadius: 15,
             spreadRadius: -3,
