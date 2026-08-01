@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -26,6 +27,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.read<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final allTasks = Provider.of<TaskProvider>(context).allTasks;
 
@@ -39,14 +42,13 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
       body: Column(
         children: [
           Container(
             height: 160.h,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? theme.scaffoldBackgroundColor : Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -79,6 +81,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            side: BorderSide(color: Colors.transparent),
+                          ),
                           icon: Icon(
                             Icons.close,
                             size: 24.sp,
@@ -92,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           },
                         ),
                         filled: true,
-                        fillColor: AppThemes.lightGrey.withOpacity(0.1),
+                        fillColor: isDark ? theme.cardColor : Color(0xFFF1F5F9),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: Colors.transparent,

@@ -22,9 +22,7 @@ class TaskScreenHeader extends StatelessWidget {
       height: 200.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: context.read<ThemeProvider>().isDarkMode
-            ? theme.scaffoldBackgroundColor
-            : Colors.white,
+        color: isDark ? theme.scaffoldBackgroundColor : Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
