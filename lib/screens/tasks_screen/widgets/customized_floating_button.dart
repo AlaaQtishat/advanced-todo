@@ -26,14 +26,16 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
         gradient: AppThemes.gradient,
         boxShadow: [
           BoxShadow(
-            color: isDark ? AppThemes.darkGrey : Color(0xFFC4B4FF),
+            color: isDark
+                ? AppThemes.primaryPurple.withOpacity(0.8)
+                : Color(0xFFC4B4FF),
             offset: const Offset(0, 4),
             blurRadius: 6,
             spreadRadius: -4,
           ),
 
           BoxShadow(
-            color: isDark ? Colors.white24 : Color(0xFFC4B4FF),
+            color: isDark ? Colors.white12 : Color(0xFFC4B4FF),
             offset: const Offset(0, 10),
             blurRadius: 15,
             spreadRadius: -3,
