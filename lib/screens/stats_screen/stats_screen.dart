@@ -135,9 +135,9 @@ class _StatsScreenState extends State<StatsScreen> {
                               percent: completionPercent,
                               circularStrokeCap: CircularStrokeCap.round,
                               progressColor: AppThemes.primaryPurple,
-                              backgroundColor: AppThemes.lightGrey.withOpacity(
-                                0.2,
-                              ),
+                              backgroundColor: isDark
+                                  ? AppThemes.lightGrey.withOpacity(0.2)
+                                  : Colors.grey.shade200,
                             ),
                             SizedBox(width: 24.w),
                             Column(
