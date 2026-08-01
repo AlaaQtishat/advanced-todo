@@ -4,6 +4,7 @@ import 'package:percent_indicator/flutter_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/screens/stats_screen/widgets/grid_category_card.dart';
 import 'package:todo/screens/stats_screen/widgets/grid_state_card.dart';
 
@@ -17,6 +18,8 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final activeTasksCount = context.watch<TaskProvider>().activeTasks.length;
     final doneTasksCount = context.watch<TaskProvider>().doneTasks.length;
@@ -63,7 +66,7 @@ class _StatsScreenState extends State<StatsScreen> {
             height: 100.h,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? theme.scaffoldBackgroundColor : Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -106,10 +109,15 @@ class _StatsScreenState extends State<StatsScreen> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.cardColor,
                         borderRadius: BorderRadius.circular(16.r),
-                        border: const Border(
-                          top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0),
+                        border: Border(
+                          top: BorderSide(
+                            color: isDark
+                                ? AppThemes.lightGrey.withOpacity(0.05)
+                                : Color(0xFFF1F5F9),
+                            width: 1.0,
+                          ),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -162,7 +170,7 @@ class _StatsScreenState extends State<StatsScreen> {
                                   "Completion rate",
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    color: Colors.blueGrey.shade400,
+                                    color: Colors.grey,
                                   ),
                                 ),
                                 SizedBox(height: 8.h),
@@ -171,7 +179,7 @@ class _StatsScreenState extends State<StatsScreen> {
                                   text: TextSpan(
                                     style: TextStyle(
                                       fontSize: 14.sp,
-                                      color: Colors.blueGrey.shade400,
+                                      color: Colors.grey,
                                     ),
                                     children: [
                                       TextSpan(
@@ -242,10 +250,15 @@ class _StatsScreenState extends State<StatsScreen> {
                         vertical: 20.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.cardColor,
                         borderRadius: BorderRadius.circular(16.r),
-                        border: const Border(
-                          top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0),
+                        border: Border(
+                          top: BorderSide(
+                            color: isDark
+                                ? AppThemes.lightGrey.withOpacity(0.05)
+                                : Color(0xFFF1F5F9),
+                            width: 1.0,
+                          ),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -270,7 +283,7 @@ class _StatsScreenState extends State<StatsScreen> {
                               Icon(
                                 Icons.access_time_rounded,
                                 size: 20.sp,
-                                color: Colors.black54,
+                                color: Colors.grey,
                               ),
                               SizedBox(width: 8.w),
                               Text(
@@ -278,8 +291,8 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   letterSpacing: 2,
                                   fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ],
@@ -301,6 +314,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
+                                  color: isDark
+                                      ? Colors.grey.shade400
+                                      : AppThemes.darkGrey,
                                 ),
                               ),
                               Spacer(),
@@ -324,10 +340,15 @@ class _StatsScreenState extends State<StatsScreen> {
                         vertical: 20.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.cardColor,
                         borderRadius: BorderRadius.circular(16.r),
-                        border: const Border(
-                          top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0),
+                        border: Border(
+                          top: BorderSide(
+                            color: isDark
+                                ? AppThemes.lightGrey.withOpacity(0.05)
+                                : Color(0xFFF1F5F9),
+                            width: 1.0,
+                          ),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -352,7 +373,7 @@ class _StatsScreenState extends State<StatsScreen> {
                               Icon(
                                 Icons.local_fire_department_outlined,
                                 size: 20.sp,
-                                color: Colors.black54,
+                                color: Colors.grey,
                               ),
                               SizedBox(width: 8.w),
                               Text(
@@ -360,8 +381,8 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   letterSpacing: 2,
                                   fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ],
@@ -377,6 +398,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w900,
+                                    color: isDark
+                                        ? Colors.grey.shade400
+                                        : AppThemes.darkGrey,
                                   ),
                                 ),
                               ),
@@ -395,6 +419,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w900,
+                                  color: isDark
+                                      ? Colors.grey.shade400
+                                      : AppThemes.darkGrey,
                                 ),
                               ),
                             ],
@@ -410,6 +437,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w900,
+                                    color: isDark
+                                        ? Colors.grey.shade400
+                                        : AppThemes.darkGrey,
                                   ),
                                 ),
                               ),
@@ -428,6 +458,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w900,
+                                  color: isDark
+                                      ? Colors.grey.shade400
+                                      : AppThemes.darkGrey,
                                 ),
                               ),
                             ],
@@ -442,6 +475,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w900,
+                                    color: isDark
+                                        ? Colors.grey.shade400
+                                        : AppThemes.darkGrey,
                                   ),
                                 ),
                               ),
@@ -460,6 +496,9 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w900,
+                                  color: isDark
+                                      ? Colors.grey.shade400
+                                      : AppThemes.darkGrey,
                                 ),
                               ),
                             ],
@@ -474,10 +513,15 @@ class _StatsScreenState extends State<StatsScreen> {
                         vertical: 20.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.cardColor,
                         borderRadius: BorderRadius.circular(16.r),
-                        border: const Border(
-                          top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0),
+                        border: Border(
+                          top: BorderSide(
+                            color: isDark
+                                ? AppThemes.lightGrey.withOpacity(0.05)
+                                : Color(0xFFF1F5F9),
+                            width: 1.0,
+                          ),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -502,7 +546,7 @@ class _StatsScreenState extends State<StatsScreen> {
                               Icon(
                                 Icons.category_outlined,
                                 size: 20.sp,
-                                color: Colors.black54,
+                                color: Colors.grey,
                               ),
                               SizedBox(width: 8.w),
                               Text(
@@ -510,8 +554,8 @@ class _StatsScreenState extends State<StatsScreen> {
                                 style: TextStyle(
                                   letterSpacing: 2,
                                   fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ],
