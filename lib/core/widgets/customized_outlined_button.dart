@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 
 class CustomizedOutlinedButton extends StatelessWidget {
   final String label;
@@ -17,6 +19,7 @@ class CustomizedOutlinedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.read<ThemeProvider>().isDarkMode;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -27,8 +30,12 @@ class CustomizedOutlinedButton extends StatelessWidget {
 
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isSelected ? Colors.transparent : color!,
-            width: 1.5,
+            color: isSelected
+                ? Colors.transparent
+                : isDark
+                ? Colors.transparent
+                : color!,
+            width: 1,
           ),
         ),
         child: Center(
