@@ -16,7 +16,7 @@ class CustomizedFloatingButton extends StatefulWidget {
 class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
   @override
   Widget build(BuildContext context) {
-    final isDark = context.read<ThemeProvider>().isDarkMode;
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     final theme = Theme.of(context);
     return Container(
       width: 64.w,

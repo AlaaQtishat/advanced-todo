@@ -20,8 +20,11 @@ class _MoreScreenState extends State<MoreScreen> {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
     final theme = Theme.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final activeTasks = context.watch<TaskProvider>().activeTasks;
-    final doneTasks = context.watch<TaskProvider>().doneTasks;
+    final provider = context.watch<TaskProvider>();
+    final activeTasksCount = provider.totalRemainingCount;
+    final doneTasksCount = provider.totalDoneCount;
+    final allTasksCount = provider.allTasks.length;
+    final pinnedCount = provider.pinnedCount;
     return Scaffold(
       body: Column(
         children: [
@@ -183,7 +186,7 @@ class _MoreScreenState extends State<MoreScreen> {
                                     ),
                                   ),
                                   Text(
-                                    "${activeTasks.length} tasks remaining",
+                                    "${activeTasksCount} tasks remaining",
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       color: Colors.grey,
@@ -265,7 +268,7 @@ class _MoreScreenState extends State<MoreScreen> {
                                     ),
                                   ),
                                   Text(
-                                    "${doneTasks.length} tasks will be removed",
+                                    "${doneTasksCount} tasks will be removed",
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       color: Colors.grey,
@@ -335,7 +338,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                               Spacer(),
                               Text(
-                                "${context.read<TaskProvider>().allTasks.length}",
+                                "${allTasksCount}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.sp,
@@ -358,7 +361,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                               Spacer(),
                               Text(
-                                "${context.read<TaskProvider>().doneTasks.length}",
+                                "${doneTasksCount}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.sp,
@@ -381,7 +384,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                               Spacer(),
                               Text(
-                                "${context.read<TaskProvider>().activeTasks.length}",
+                                "${activeTasksCount}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.sp,
@@ -404,7 +407,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                               Spacer(),
                               Text(
-                                "${context.read<TaskProvider>().pinnedCount}",
+                                "${pinnedCount}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.sp,
