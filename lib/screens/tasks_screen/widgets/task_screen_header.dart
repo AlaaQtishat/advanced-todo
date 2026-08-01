@@ -65,7 +65,6 @@ class TaskScreenHeader extends StatelessWidget {
                     Consumer<ThemeProvider>(
                       builder: (context, themeProvider, child) {
                         return IconButton(
-                          style: IconButton.styleFrom(),
                           icon: themeProvider.isDarkMode
                               ? Icon(Icons.wb_sunny_outlined, size: 24.sp)
                               : Icon(Icons.bedtime_outlined, size: 24.sp),

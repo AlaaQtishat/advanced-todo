@@ -102,9 +102,14 @@ class _StatsScreenState extends State<StatsScreen> {
           ),
 
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-              child: SingleChildScrollView(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 16.w,
+                  right: 16.w,
+                  top: 16.h,
+                  bottom: 20.h,
+                ),
                 child: Column(
                   children: [
                     Container(
