@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/core/constants/app_themes.dart';
+import 'package:todo/core/providers/theme_provider.dart';
 
 class GridStateCard extends StatelessWidget {
   final String title;
@@ -17,12 +20,19 @@ class GridStateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: const Border(
-          top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0),
+        border: Border(
+          top: BorderSide(
+            color: isDark
+                ? AppThemes.lightGrey.withOpacity(0.05)
+                : Color(0xFFF1F5F9),
+            width: 1.0,
+          ),
         ),
         boxShadow: [
           BoxShadow(
