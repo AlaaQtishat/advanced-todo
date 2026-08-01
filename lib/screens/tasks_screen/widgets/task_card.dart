@@ -122,26 +122,37 @@ class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     return Opacity(
       opacity: widget.isCompleted ? 0.5 : 1.0,
       child: Container(
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Color(0xFFDDD6FF), width: 1.0)),
+          border: Border(
+            top: BorderSide(
+              color: isDark
+                  ? AppThemes.lightGrey.withOpacity(0.05)
+                  : Color(0xFFDDD6FF),
+              width: 1.0,
+            ),
+          ),
           color: theme.cardColor,
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFFEDE9FE),
+              color: isDark
+                  ? AppThemes.lightGrey.withOpacity(0.05)
+                  : Color(0xFFEDE9FE),
               offset: Offset(0, 1),
               blurRadius: 2.0,
               spreadRadius: -1.0,
             ),
 
             BoxShadow(
-              color: Color(0xFFEDE9FE),
+              color: isDark
+                  ? AppThemes.lightGrey.withOpacity(0.2)
+                  : Color(0xFFEDE9FE),
               offset: Offset(0, 1),
               blurRadius: 3.0,
               spreadRadius: 0.0,
@@ -165,7 +176,9 @@ class _TaskCardState extends State<TaskCard> {
             padding: EdgeInsets.only(top: 4.h, right: 12.w),
             child: Icon(
               Icons.drag_indicator,
-              color: Colors.grey.shade300,
+              color: isDark
+                  ? AppThemes.lightGrey.withOpacity(0.2)
+                  : AppThemes.darkGrey.withOpacity(0.1),
               size: 30.sp,
             ),
           ),
@@ -183,7 +196,7 @@ class _TaskCardState extends State<TaskCard> {
                 color: widget.isCompleted
                     ? const Color(0xFF00BC7D)
                     : isDark
-                    ? AppThemes.lightGrey.withOpacity(0.1)
+                    ? AppThemes.lightGrey.withOpacity(0.2)
                     : AppThemes.darkGrey.withOpacity(0.08),
               ),
               child: widget.isCompleted
@@ -387,6 +400,7 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Widget buildEditMode() {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,7 +411,9 @@ class _TaskCardState extends State<TaskCard> {
             padding: EdgeInsets.only(top: 4.h, right: 12.w),
             child: Icon(
               Icons.drag_indicator,
-              color: Colors.grey.shade400,
+              color: isDark
+                  ? AppThemes.lightGrey.withOpacity(0.2)
+                  : AppThemes.darkGrey.withOpacity(0.1),
               size: 30.sp,
             ),
           ),
@@ -410,7 +426,11 @@ class _TaskCardState extends State<TaskCard> {
             height: 32.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppThemes.lightGrey.withOpacity(0.1),
+              color: widget.isCompleted
+                  ? const Color(0xFF00BC7D)
+                  : isDark
+                  ? AppThemes.lightGrey.withOpacity(0.2)
+                  : AppThemes.darkGrey.withOpacity(0.08),
             ),
           ),
         ),
@@ -427,7 +447,9 @@ class _TaskCardState extends State<TaskCard> {
                     vertical: 12.h,
                   ),
                   filled: true,
-                  fillColor: AppThemes.lightGrey.withOpacity(0.1),
+                  fillColor: isDark
+                      ? AppThemes.lightGrey.withOpacity(0.2)
+                      : AppThemes.darkGrey.withOpacity(0.1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide.none,
@@ -481,7 +503,9 @@ class _TaskCardState extends State<TaskCard> {
                       });
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: AppThemes.lightGrey.withOpacity(0.1),
+                      backgroundColor: isDark
+                          ? AppThemes.lightGrey.withOpacity(0.2)
+                          : AppThemes.darkGrey.withOpacity(0.1),
                       foregroundColor: Colors.blueGrey.shade400,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,

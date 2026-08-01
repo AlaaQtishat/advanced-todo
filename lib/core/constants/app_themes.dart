@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppThemes {
   static final Color primaryPurple = Color(0xFF7F22FE);
   static final Color lightGrey = Colors.grey.shade300;
-  static final Color darkGrey = Colors.grey.shade700;
+  static final Color darkGrey = Colors.grey.shade600;
   static final Color highPriorityRed = Color(0xFFFB2C36);
   static final Color mediumPriorityOrange = Color(0xFFFE9A00);
   static final Color lowPriorityBlue = Colors.cyan[700]!;
@@ -33,7 +33,7 @@ class AppThemes {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey[100],
-        foregroundColor: Colors.black87,
+        foregroundColor: darkGrey,
       ),
     ),
     iconButtonTheme: IconButtonThemeData(
@@ -55,22 +55,22 @@ class AppThemes {
       ),
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.white),
-      bodySmall: TextStyle(color: Colors.white),
-      bodyMedium: TextStyle(color: Colors.white),
+      bodyLarge: TextStyle(color: Colors.white70),
+      bodySmall: TextStyle(color: Colors.white70),
+      bodyMedium: TextStyle(color: Colors.white70),
     ),
     cardColor: Color(0xFF18181B),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF171717),
-        foregroundColor: Colors.white,
+        foregroundColor: darkGrey,
       ),
     ),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(
-        foregroundColor: lightGrey,
+        foregroundColor: Colors.grey,
         backgroundColor: Color(0xFF1C1C1E),
-        side: BorderSide(color: lightGrey),
+        side: BorderSide(color: Colors.grey, width: 0.3),
       ),
     ),
   );
