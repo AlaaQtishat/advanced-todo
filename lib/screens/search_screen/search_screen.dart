@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch()<ThemeProvider>().isDarkMode;
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     final theme = Theme.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final allTasks = Provider.of<TaskProvider>(context).allTasks;
