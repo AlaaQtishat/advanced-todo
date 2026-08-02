@@ -31,21 +31,7 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
-  late TextEditingController editTitleController;
-  bool isEditing = false;
   bool isExpanded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    editTitleController = TextEditingController(text: widget.task.taskTitle);
-  }
-
-  @override
-  void dispose() {
-    editTitleController.dispose();
-    super.dispose();
-  }
 
   Color priorityColor(String priority) {
     switch (priority) {
@@ -109,6 +95,7 @@ class _TaskCardState extends State<TaskCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final isSoon = context.read<TaskProvider>().isDueSoon(widget.task.dueDate);
     return Opacity(
       opacity: widget.task.isCompleted ? 0.5 : 1.0,
       child: Container(
@@ -145,382 +132,253 @@ class _TaskCardState extends State<TaskCard> {
             ),
           ],
         ),
-        child: isEditing ? buildEditMode() : buildNormalMode(),
-      ),
-    );
-  }
-
-  Widget buildNormalMode() {
-    final isDark = context.watch<ThemeProvider>().isDarkMode;
-    final isSoon = context.read<TaskProvider>().isDueSoon(widget.task.dueDate);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ReorderableDragStartListener(
-          index: widget.index,
-          child: Padding(
-            padding: EdgeInsets.only(top: 4.h, right: 12.w),
-            child: Icon(
-              Icons.drag_indicator,
-              color: isDark
-                  ? AppThemes.lightGrey.withOpacity(0.2)
-                  : AppThemes.darkGrey.withOpacity(0.1),
-              size: 30.sp,
-            ),
-          ),
-        ),
-
-        Padding(
-          padding: EdgeInsets.only(top: 4.h, right: 16.w),
-          child: GestureDetector(
-            onTap: widget.onToggleComplete,
-            child: Container(
-              width: 32.w,
-              height: 32.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: widget.task.isCompleted
-                    ? const Color(0xFF00BC7D)
-                    : isDark
-                    ? AppThemes.lightGrey.withOpacity(0.2)
-                    : AppThemes.darkGrey.withOpacity(0.08),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ReorderableDragStartListener(
+              index: widget.index,
+              child: Padding(
+                padding: EdgeInsets.only(top: 4.h, right: 12.w),
+                child: Icon(
+                  Icons.drag_indicator,
+                  color: isDark
+                      ? AppThemes.lightGrey.withOpacity(0.2)
+                      : AppThemes.darkGrey.withOpacity(0.1),
+                  size: 30.sp,
+                ),
               ),
-              child: widget.task.isCompleted
-                  ? Icon(Icons.check, size: 18.sp, color: Colors.white)
-                  : null,
             ),
-          ),
-        ),
 
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.task.taskTitle,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  decoration: widget.task.isCompleted
-                      ? TextDecoration.lineThrough
+            Padding(
+              padding: EdgeInsets.only(top: 4.h, right: 16.w),
+              child: GestureDetector(
+                onTap: widget.onToggleComplete,
+                child: Container(
+                  width: 32.w,
+                  height: 32.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: widget.task.isCompleted
+                        ? const Color(0xFF00BC7D)
+                        : isDark
+                        ? AppThemes.lightGrey.withOpacity(0.2)
+                        : AppThemes.darkGrey.withOpacity(0.08),
+                  ),
+                  child: widget.task.isCompleted
+                      ? Icon(Icons.check, size: 18.sp, color: Colors.white)
                       : null,
                 ),
               ),
-              SizedBox(height: 12.h),
+            ),
 
-              Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 4.h,
+                  Text(
+                    widget.task.taskTitle,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      decoration: widget.task.isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
                     ),
-                    decoration: BoxDecoration(
-                      color: widget.task.isCompleted
-                          ? Colors.transparent
-                          : priorityColor(
-                              widget.task.priority,
-                            ).withOpacity(0.1),
-                      border: Border.all(
-                        color: priorityColor(widget.task.priority),
-                      ),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.circle,
-                          size: 8.sp,
-                          color: priorityColor(widget.task.priority),
+                  ),
+                  SizedBox(height: 12.h),
+
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 4.h,
                         ),
-                        SizedBox(width: 6.w),
-                        Text(
-                          widget.task.priority,
-                          style: TextStyle(
+                        decoration: BoxDecoration(
+                          color: widget.task.isCompleted
+                              ? Colors.transparent
+                              : priorityColor(
+                                  widget.task.priority,
+                                ).withOpacity(0.1),
+                          border: Border.all(
                             color: priorityColor(widget.task.priority),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp,
+                          ),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: 8.sp,
+                              color: priorityColor(widget.task.priority),
+                            ),
+                            SizedBox(width: 6.w),
+                            Text(
+                              widget.task.priority,
+                              style: TextStyle(
+                                color: priorityColor(widget.task.priority),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        widget.task.category,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: isDark
+                              ? AppThemes.lightGrey
+                              : AppThemes.darkGrey,
+                        ),
+                      ),
+
+                      if (widget.task.dueDate != null) ...[
+                        Padding(
+                          padding: EdgeInsets.only(top: 6.h, left: 8.w),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.calendar_today_outlined,
+                                size: 14.sp,
+
+                                color: widget.task.isCompleted
+                                    ? Colors.grey
+                                    : (isSoon
+                                          ? Colors.deepOrange.shade400
+                                          : isDark
+                                          ? AppThemes.lightGrey.withOpacity(0.5)
+                                          : AppThemes.darkGrey.withOpacity(
+                                              0.5,
+                                            )),
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                _formatDueDate(widget.task.dueDate!),
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.bold,
+
+                                  color: widget.task.isCompleted
+                                      ? Colors.grey
+                                      : (isSoon
+                                            ? Colors.deepOrange.shade400
+                                            : isDark
+                                            ? AppThemes.lightGrey.withOpacity(
+                                                0.5,
+                                              )
+                                            : AppThemes.darkGrey.withOpacity(
+                                                0.5,
+                                              )),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
+                    ],
                   ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    widget.task.category,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? AppThemes.lightGrey : AppThemes.darkGrey,
-                    ),
-                  ),
+                  SizedBox(height: 8.h),
 
-                  if (widget.task.dueDate != null) ...[
-                    Padding(
-                      padding: EdgeInsets.only(top: 6.h, left: 8.w),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.calendar_today_outlined,
-                            size: 14.sp,
+                  if (widget.task.description.isNotEmpty) ...[
+                    Text(
+                      widget.task.description,
 
-                            color: widget.task.isCompleted
-                                ? Colors.grey
-                                : (isSoon
-                                      ? Colors.deepOrange.shade400
-                                      : isDark
-                                      ? AppThemes.lightGrey.withOpacity(0.5)
-                                      : AppThemes.darkGrey.withOpacity(0.5)),
-                          ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            _formatDueDate(widget.task.dueDate!),
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-
-                              color: widget.task.isCompleted
-                                  ? Colors.grey
-                                  : (isSoon
-                                        ? Colors.deepOrange.shade400
-                                        : isDark
-                                        ? AppThemes.lightGrey.withOpacity(0.5)
-                                        : AppThemes.darkGrey.withOpacity(0.5)),
-                            ),
-                          ),
-                        ],
+                      maxLines: isExpanded ? null : 1,
+                      overflow: isExpanded
+                          ? TextOverflow.visible
+                          : TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: isDark
+                            ? AppThemes.lightGrey
+                            : AppThemes.darkGrey,
+                        height: 1.4,
                       ),
                     ),
+                    SizedBox(height: 8.h),
                   ],
+                  Text(
+                    _formatDate(widget.task.createdAt),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: 8.h),
+            ),
 
-              if (widget.task.description.isNotEmpty) ...[
-                Text(
-                  widget.task.description,
+            SizedBox(width: 8.w),
 
-                  maxLines: isExpanded ? null : 1,
-                  overflow: isExpanded
-                      ? TextOverflow.visible
-                      : TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: isDark ? AppThemes.lightGrey : AppThemes.darkGrey,
-                    height: 1.4,
-                  ),
+            Column(
+              children: [
+                CardActionButton(
+                  icon: Icons.push_pin_outlined,
+                  iconColor: widget.task.isPinned
+                      ? AppThemes.primaryPurple
+                      : null,
+                  backgroundColor: widget.task.isPinned
+                      ? AppThemes.primaryPurple.withOpacity(0.08)
+                      : null,
+                  onTap: widget.task.isCompleted ? null : widget.onPin,
                 ),
+
                 SizedBox(height: 8.h),
+                CardActionButton(
+                  icon: Icons.edit_outlined,
+
+                  onTap: widget.task.isCompleted
+                      ? null
+                      : () {
+                          widget.onEdit();
+                        },
+                ),
+
+                SizedBox(height: 8.h),
+
+                CardActionButton(
+                  icon: Icons.delete_outline,
+
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CustomizedAlertDialog(
+                        title: "Delete Task",
+                        content:
+                            "Are you sure you want to permanently delete this task?",
+                        onPressed: () {
+                          Navigator.pop(context);
+                          widget.onDelete();
+                        },
+                        buttonColor: Colors.red,
+                      ),
+                    );
+                  },
+                ),
+
+                SizedBox(height: 8.h),
+                CardActionButton(
+                  icon: isExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  onTap: () {
+                    setState(() {
+                      isExpanded = !isExpanded;
+                    });
+                  },
+                ),
               ],
-              Text(
-                _formatDate(widget.task.createdAt),
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade400),
-              ),
-            ],
-          ),
-        ),
-
-        SizedBox(width: 8.w),
-
-        Column(
-          children: [
-            CardActionButton(
-              icon: Icons.push_pin_outlined,
-              iconColor: widget.task.isPinned ? AppThemes.primaryPurple : null,
-              backgroundColor: widget.task.isPinned
-                  ? AppThemes.primaryPurple.withOpacity(0.08)
-                  : null,
-              onTap: widget.task.isCompleted ? null : widget.onPin,
-            ),
-
-            SizedBox(height: 8.h),
-            CardActionButton(
-              icon: Icons.edit_outlined,
-
-              onTap: widget.task.isCompleted
-                  ? null
-                  : () {
-                      setState(() {
-                        isEditing = true;
-                      });
-                      widget.onEdit();
-                    },
-            ),
-
-            SizedBox(height: 8.h),
-
-            CardActionButton(
-              icon: Icons.delete_outline,
-
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => CustomizedAlertDialog(
-                    title: "Delete Task",
-                    content:
-                        "Are you sure you want to permanently delete this task?",
-                    onPressed: () {
-                      Navigator.pop(context);
-                      widget.onDelete();
-                    },
-                    buttonColor: Colors.red,
-                  ),
-                );
-              },
-            ),
-
-            SizedBox(height: 8.h),
-            CardActionButton(
-              icon: isExpanded
-                  ? Icons.keyboard_arrow_up
-                  : Icons.keyboard_arrow_down,
-              onTap: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              },
             ),
           ],
         ),
-      ],
-    );
-  }
-
-  Widget buildEditMode() {
-    final isDark = context.watch<ThemeProvider>().isDarkMode;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ReorderableDragStartListener(
-          index: widget.index,
-          child: Padding(
-            padding: EdgeInsets.only(top: 4.h, right: 12.w),
-            child: Icon(
-              Icons.drag_indicator,
-              color: isDark
-                  ? AppThemes.lightGrey.withOpacity(0.2)
-                  : AppThemes.darkGrey.withOpacity(0.1),
-              size: 30.sp,
-            ),
-          ),
-        ),
-
-        Padding(
-          padding: EdgeInsets.only(top: 4.h, right: 16.w),
-          child: Container(
-            width: 32.w,
-            height: 32.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: widget.task.isCompleted
-                  ? const Color(0xFF00BC7D)
-                  : isDark
-                  ? AppThemes.lightGrey.withOpacity(0.2)
-                  : AppThemes.darkGrey.withOpacity(0.08),
-            ),
-          ),
-        ),
-
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: editTitleController,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 12.h,
-                  ),
-                  filled: true,
-                  fillColor: isDark
-                      ? AppThemes.lightGrey.withOpacity(0.2)
-                      : AppThemes.darkGrey.withOpacity(0.1),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                style: TextStyle(fontSize: 16.sp),
-              ),
-              SizedBox(height: 12.h),
-
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<TaskProvider>().updateTaskTitle(
-                        widget.task.createdAt,
-                        editTitleController.text.trim(),
-                      );
-                      setState(() {
-                        isEditing = false;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppThemes.primaryPurple,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    icon: Icon(Icons.save_outlined, size: 18.sp),
-                    label: Text(
-                      "Save",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(width: 8.w),
-
-                  TextButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        editTitleController.text = widget.task.taskTitle;
-                        isEditing = false;
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: isDark
-                          ? AppThemes.lightGrey.withOpacity(0.2)
-                          : AppThemes.darkGrey.withOpacity(0.1),
-                      foregroundColor: Colors.blueGrey.shade400,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    icon: Icon(Icons.close, size: 18.sp, color: Colors.grey),
-                    label: Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
