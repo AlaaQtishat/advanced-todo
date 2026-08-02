@@ -136,23 +136,21 @@ class TaskProvider extends ChangeNotifier {
     _saveAndNotify();
   }
 
-  void updateTaskTitle(DateTime createdAt, String newTitle) {
+  void updateTask(TaskModel updatedTask) {
     final index = _globalTasks.indexWhere(
-      (task) => task.createdAt == createdAt,
+      (t) => t.createdAt == updatedTask.createdAt,
     );
-    final existingTask = _globalTasks[index];
 
     _globalTasks[index] = TaskModel(
-      taskTitle: newTitle,
-      description: existingTask.description,
-      isCompleted: existingTask.isCompleted,
-      isPinned: existingTask.isPinned,
-      priority: existingTask.priority,
-      category: existingTask.category,
-      createdAt: existingTask.createdAt,
-      dueDate: existingTask.dueDate,
+      taskTitle: updatedTask.taskTitle,
+      description: updatedTask.description,
+      isCompleted: updatedTask.isCompleted,
+      isPinned: updatedTask.isPinned,
+      priority: updatedTask.priority,
+      category: updatedTask.category,
+      createdAt: updatedTask.createdAt,
+      dueDate: updatedTask.dueDate,
     );
-
     _saveAndNotify();
   }
 

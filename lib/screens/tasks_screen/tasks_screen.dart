@@ -5,6 +5,7 @@ import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
+import 'package:todo/screens/tasks_screen/widgets/task_editing_pop_up.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_screen_header.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +26,7 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final theme = Theme.of(context);
     return Scaffold(
       body: Column(
         children: [
@@ -74,10 +76,22 @@ class _TasksScreenState extends State<TasksScreen> {
                             final task = activeTasks[index];
                             return TaskCard(
                               key: ValueKey(task.createdAt.toString()),
-                              onEdit: () => provider.updateTaskTitle(
-                                task.createdAt,
-                                task.taskTitle,
-                              ),
+
+                              onEdit: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      insetPadding: EdgeInsets.symmetric(
+                                        horizontal: 16.w,
+                                        vertical: 16.h,
+                                      ),
+                                      backgroundColor: theme.cardColor,
+                                      child: TaskEditingPopUp(task: task),
+                                    );
+                                  },
+                                );
+                              },
                               index: index,
                               task: task,
 
@@ -122,10 +136,7 @@ class _TasksScreenState extends State<TasksScreen> {
                             final task = doneTasks[index];
                             return TaskCard(
                               key: ValueKey(task.createdAt.toString()),
-                              onEdit: () => provider.updateTaskTitle(
-                                task.createdAt,
-                                task.taskTitle,
-                              ),
+                              onEdit: () {},
                               index: index,
                               task: task,
                               onToggleComplete: () =>
