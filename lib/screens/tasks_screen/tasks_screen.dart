@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
+import 'package:todo/screens/tasks_screen/widgets/add_edit_task_form.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
-import 'package:todo/screens/tasks_screen/widgets/task_editing_pop_up.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_screen_header.dart';
 import 'package:flutter/services.dart';
 
@@ -87,7 +87,7 @@ class _TasksScreenState extends State<TasksScreen> {
                                         vertical: 16.h,
                                       ),
                                       backgroundColor: theme.cardColor,
-                                      child: TaskEditingPopUp(task: task),
+                                      child: AddEditTaskForm(task: task),
                                     );
                                   },
                                 );
