@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:todo/core/models/task_model.dart';
 import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
+import 'package:todo/screens/tasks_screen/widgets/add_edit_task_form.dart';
 import 'package:todo/screens/tasks_screen/widgets/task_card.dart';
-import 'package:todo/screens/tasks_screen/widgets/task_editing_pop_up.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -192,7 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     vertical: 24.h,
                   ),
                   backgroundColor: theme.cardColor,
-                  child: TaskEditingPopUp(task: task),
+                  child: AddEditTaskForm(task: task),
                 );
               },
             );

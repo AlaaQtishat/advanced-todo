@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/core/providers/theme_provider.dart';
-import 'package:todo/screens/tasks_screen/widgets/task_addition_modal.dart';
+import 'package:todo/screens/tasks_screen/widgets/add_edit_task_form.dart';
 
 class CustomizedFloatingButton extends StatefulWidget {
   const CustomizedFloatingButton({super.key});
@@ -52,7 +52,7 @@ class _CustomizedFloatingButtonState extends State<CustomizedFloatingButton> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             builder: (context) {
-              return const TaskAdditionModal();
+              return AddEditTaskForm();
             },
           );
         },

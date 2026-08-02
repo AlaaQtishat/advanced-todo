@@ -7,21 +7,25 @@ import 'package:todo/core/providers/task_provider.dart';
 import 'package:todo/core/providers/theme_provider.dart';
 import 'package:todo/core/widgets/customized_outlined_button.dart';
 
-class TaskEditingPopUp extends StatefulWidget {
-  final TaskModel task;
-  const TaskEditingPopUp({super.key, required this.task});
+class AddEditTaskForm extends StatefulWidget {
+  final TaskModel? task;
+
+  AddEditTaskForm({super.key, this.task});
 
   @override
-  State<TaskEditingPopUp> createState() => _TaskEditingPopUpState();
+  State<AddEditTaskForm> createState() => _AddEditTaskFormState();
 }
 
-class _TaskEditingPopUpState extends State<TaskEditingPopUp> {
+class _AddEditTaskFormState extends State<AddEditTaskForm> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  String? priority;
-  String? category;
-  DateTime? dueDate;
 
+  TextEditingController descriptionController = TextEditingController();
+
+  String? priority;
+
+  String? category;
+
+  DateTime? dueDate;
   Future<void> _pickDueDate() async {
     final pickedDate = await showDatePicker(
       context: context,
@@ -55,14 +59,23 @@ class _TaskEditingPopUpState extends State<TaskEditingPopUp> {
 
   @override
   void initState() {
-    titleController = TextEditingController(text: widget.task.taskTitle);
-    descriptionController = TextEditingController(
-      text: widget.task.description,
-    );
-    priority = widget.task.priority;
-    category = widget.task.category;
-    dueDate = widget.task.dueDate;
     super.initState();
+
+    if (widget.task != null) {
+      titleController = TextEditingController(text: widget.task!.taskTitle);
+      descriptionController = TextEditingController(
+        text: widget.task!.description,
+      );
+      priority = widget.task!.priority;
+      category = widget.task!.category;
+      dueDate = widget.task!.dueDate;
+    } else {
+      titleController = TextEditingController();
+      descriptionController = TextEditingController();
+      priority = null;
+      category = null;
+      dueDate = null;
+    }
   }
 
   @override
@@ -106,7 +119,7 @@ class _TaskEditingPopUpState extends State<TaskEditingPopUp> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Edit Task',
+                    widget.task != null ? 'Edit Task' : 'Add Task',
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -456,37 +469,59 @@ class _TaskEditingPopUpState extends State<TaskEditingPopUp> {
                           category != null &&
                           priority != null)
                       ? () {
-                          final modifiedTask = TaskModel(
-                            taskTitle: titleController.text.trim(),
-                            description: descriptionController.text.trim(),
-                            isCompleted: widget.task.isCompleted,
-                            isPinned: widget.task.isPinned,
-                            priority: priority!,
-                            category: category!,
-                            createdAt: widget.task.createdAt,
-                            dueDate: dueDate,
-                          );
-
-                          context.read<TaskProvider>().updateTask(modifiedTask);
-
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Task updated successfully!",
-                                style: TextStyle(
-                                  color: isDark
-                                      ? Colors.grey
-                                      : AppThemes.darkGrey,
-                                ),
+                          if (widget.task == null) {
+                            context.read<TaskProvider>().addTask(
+                              TaskModel(
+                                taskTitle: titleController.text.trim(),
+                                description: descriptionController.text.trim(),
+                                priority: priority!,
+                                category: category!,
+                                createdAt: DateTime.now(),
+                                dueDate: dueDate,
                               ),
-                              backgroundColor: theme.cardColor,
-                            ),
-                          );
+                            );
+
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Task added successfully!",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: AppThemes.primaryGreen,
+                              ),
+                            );
+                          } else {
+                            final modifiedTask = TaskModel(
+                              taskTitle: titleController.text.trim(),
+                              description: descriptionController.text.trim(),
+                              isCompleted: widget.task!.isCompleted,
+                              isPinned: widget.task!.isPinned,
+                              priority: priority!,
+                              category: category!,
+                              createdAt: widget.task!.createdAt,
+                              dueDate: dueDate,
+                            );
+
+                            context.read<TaskProvider>().updateTask(
+                              modifiedTask,
+                            );
+
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Task updated successfully!",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: AppThemes.primaryGreen,
+                              ),
+                            );
+                          }
                         }
                       : null,
                   child: Text(
-                    "Save Changes",
+                    widget.task != null ? "Save Changes" : "Add Task",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

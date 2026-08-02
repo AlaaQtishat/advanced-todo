@@ -52,12 +52,15 @@ class TaskProvider extends ChangeNotifier {
   }
 
   int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
-  int get highPriorityCount =>
-      _globalTasks.where((task) => task.priority == "High").length;
-  int get mediumPriorityCount =>
-      _globalTasks.where((task) => task.priority == "Medium").length;
-  int get lowPriorityCount =>
-      _globalTasks.where((task) => task.priority == "Low").length;
+  int get highPriorityCount => _globalTasks
+      .where((task) => task.priority == "High" && !task.isCompleted)
+      .length;
+  int get mediumPriorityCount => _globalTasks
+      .where((task) => task.priority == "Medium" && !task.isCompleted)
+      .length;
+  int get lowPriorityCount => _globalTasks
+      .where((task) => task.priority == "Low" && !task.isCompleted)
+      .length;
   int get workCategoryCount => _globalTasks
       .where((task) => task.category == "Work" && !task.isCompleted)
       .length;
