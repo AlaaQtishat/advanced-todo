@@ -5,14 +5,14 @@ import 'package:todo/core/providers/theme_provider.dart';
 
 class CustomizedOutlinedButton extends StatelessWidget {
   final String label;
-  final Color? color;
+  final Color color;
   final bool isSelected;
   final VoidCallback onTap;
 
   const CustomizedOutlinedButton({
     Key? key,
     required this.label,
-    this.color = Colors.blueGrey,
+    required this.color,
     required this.isSelected,
     required this.onTap,
   }) : super(key: key);

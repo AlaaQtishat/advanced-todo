@@ -10,18 +10,18 @@ import 'package:todo/screens/tasks_screen/widgets/card_action_button.dart';
 
 class TaskCard extends StatefulWidget {
   final int index;
-  final VoidCallback? onToggleComplete;
+  final VoidCallback onToggleComplete;
   final VoidCallback? onPin;
-  final VoidCallback onEdit;
+  final VoidCallback? onEdit;
   final VoidCallback onDelete;
   final TaskModel task;
 
   const TaskCard({
     super.key,
     required this.index,
-    this.onToggleComplete,
+    required this.onToggleComplete,
     this.onPin,
-    required this.onEdit,
+    this.onEdit,
     required this.onDelete,
     required this.task,
   });
@@ -327,18 +327,14 @@ class _TaskCardState extends State<TaskCard> {
                   backgroundColor: widget.task.isPinned
                       ? AppThemes.primaryPurple.withOpacity(0.08)
                       : null,
-                  onTap: widget.task.isCompleted ? null : widget.onPin,
+                  onTap: widget.onPin,
                 ),
 
                 SizedBox(height: 8.h),
                 CardActionButton(
                   icon: Icons.edit_outlined,
 
-                  onTap: widget.task.isCompleted
-                      ? null
-                      : () {
-                          widget.onEdit();
-                        },
+                  onTap: widget.onEdit,
                 ),
 
                 SizedBox(height: 8.h),
