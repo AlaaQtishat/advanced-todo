@@ -182,26 +182,30 @@ class _SearchScreenState extends State<SearchScreen> {
         final task = searchResults[index];
         return TaskCard(
           key: ValueKey(task.createdAt.toString()),
-          onEdit: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  insetPadding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 24.h,
-                  ),
-                  backgroundColor: theme.cardColor,
-                  child: AddEditTaskForm(task: task),
-                );
-              },
-            );
-          },
+          onEdit: task.isCompleted
+              ? null
+              : () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        insetPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 24.h,
+                        ),
+                        backgroundColor: theme.cardColor,
+                        child: AddEditTaskForm(task: task),
+                      );
+                    },
+                  );
+                },
           index: index,
           task: task,
           onToggleComplete: () =>
               context.read<TaskProvider>().toggleTask(task, !task.isCompleted),
-          onPin: () => context.read<TaskProvider>().togglePin(task),
+          onPin: task.isCompleted
+              ? null
+              : () => context.read<TaskProvider>().togglePin(task),
           onDelete: () {
             context.read<TaskProvider>().removeTask(task);
           },

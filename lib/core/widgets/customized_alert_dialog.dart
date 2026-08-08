@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo/core/providers/theme_provider.dart';
 
 class CustomizedAlertDialog extends StatelessWidget {
   final String title;

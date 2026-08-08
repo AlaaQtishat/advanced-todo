@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:todo/core/constants/app_themes.dart';
 import 'package:todo/screens/tasks_screen/tasks_screen.dart';
 import 'package:todo/screens/search_screen/search_screen.dart';
 import 'package:todo/screens/stats_screen/stats_screen.dart';

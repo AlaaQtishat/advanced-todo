@@ -169,7 +169,7 @@ class TaskProvider extends ChangeNotifier {
           taskTitle: _globalTasks[i].taskTitle,
           description: _globalTasks[i].description,
           isCompleted: true,
-          isPinned: _globalTasks[i].isPinned,
+          isPinned: false,
           priority: _globalTasks[i].priority,
           category: _globalTasks[i].category,
           createdAt: _globalTasks[i].createdAt,

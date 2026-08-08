@@ -136,12 +136,12 @@ class _TasksScreenState extends State<TasksScreen> {
                             final task = doneTasks[index];
                             return TaskCard(
                               key: ValueKey(task.createdAt.toString()),
-                              onEdit: () {},
+                              onEdit: null,
                               index: index,
                               task: task,
                               onToggleComplete: () =>
                                   provider.toggleTask(task, !task.isCompleted),
-                              onPin: () => provider.togglePin(task),
+                              onPin: null,
                               onDelete: () => provider.removeTask(task),
                             );
                           },

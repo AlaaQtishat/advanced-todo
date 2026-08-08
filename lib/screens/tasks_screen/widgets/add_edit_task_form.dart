@@ -10,7 +10,7 @@ import 'package:todo/core/widgets/customized_outlined_button.dart';
 class AddEditTaskForm extends StatefulWidget {
   final TaskModel? task;
 
-  AddEditTaskForm({super.key, this.task});
+  const AddEditTaskForm({super.key, this.task});
 
   @override
   State<AddEditTaskForm> createState() => _AddEditTaskFormState();
@@ -18,21 +18,18 @@ class AddEditTaskForm extends StatefulWidget {
 
 class _AddEditTaskFormState extends State<AddEditTaskForm> {
   TextEditingController titleController = TextEditingController();
-
   TextEditingController descriptionController = TextEditingController();
-
   String? priority;
-
   String? category;
-
   DateTime? dueDate;
+
   Future<void> _pickDueDate() async {
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
-      builder: (context, child) {
+      builder: (context, datePicker) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(
@@ -45,7 +42,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
             ),
           ),
 
-          child: child!,
+          child: datePicker!,
         );
       },
     );
@@ -62,16 +59,12 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
     super.initState();
 
     if (widget.task != null) {
-      titleController = TextEditingController(text: widget.task!.taskTitle);
-      descriptionController = TextEditingController(
-        text: widget.task!.description,
-      );
+      titleController.text = widget.task!.taskTitle;
+      descriptionController.text = widget.task!.description;
       priority = widget.task!.priority;
       category = widget.task!.category;
       dueDate = widget.task!.dueDate;
     } else {
-      titleController = TextEditingController();
-      descriptionController = TextEditingController();
       priority = null;
       category = null;
       dueDate = null;
@@ -88,7 +81,6 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
-    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
