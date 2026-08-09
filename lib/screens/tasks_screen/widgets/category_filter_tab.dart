@@ -21,7 +21,7 @@ class CategoryFilterTab extends StatelessWidget {
         children: [
           Expanded(
             child: CustomizedElevatedButton(
-              text: "🗂️ All",
+              text: "All",
               onPressed: () {
                 context.read<TaskProvider>().setCategoryFilter("All");
               },
@@ -41,7 +41,7 @@ class CategoryFilterTab extends StatelessWidget {
           Expanded(
             child: CustomizedElevatedButton(
               fontSize: 14.sp,
-              text: "💼 Work",
+              text: "Work",
               onPressed: () {
                 context.read<TaskProvider>().setCategoryFilter("Work");
               },
@@ -60,7 +60,7 @@ class CategoryFilterTab extends StatelessWidget {
           Expanded(
             child: CustomizedElevatedButton(
               fontSize: 14.sp,
-              text: "🏠 Personal",
+              text: "Personal",
               onPressed: () {
                 context.read<TaskProvider>().setCategoryFilter("Personal");
               },
@@ -79,7 +79,7 @@ class CategoryFilterTab extends StatelessWidget {
           Expanded(
             child: CustomizedElevatedButton(
               fontSize: 14.sp,
-              text: "🛒 Shopping",
+              text: "Shopping",
               onPressed: () {
                 context.read<TaskProvider>().setCategoryFilter("Shopping");
               },
@@ -98,7 +98,7 @@ class CategoryFilterTab extends StatelessWidget {
           Expanded(
             child: CustomizedElevatedButton(
               fontSize: 14.sp,
-              text: "📚 Study",
+              text: "Study",
               onPressed: () {
                 context.read<TaskProvider>().setCategoryFilter("Study");
               },
