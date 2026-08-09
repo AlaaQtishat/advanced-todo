@@ -228,7 +228,7 @@ class _TaskCardState extends State<TaskCard> {
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        widget.task.category,
+                        widget.task.category ?? "",
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,

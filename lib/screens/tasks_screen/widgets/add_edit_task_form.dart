@@ -66,7 +66,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
       category = widget.task!.category;
       dueDate = widget.task!.dueDate;
     } else {
-      priority = null;
+      priority = "Low";
       category = null;
       dueDate = null;
     }
@@ -152,7 +152,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
                     filled: true,
                     fillColor: isDark ? Color(0xFF242426) : Color(0xFFF1F5F9),
                     label: Text(
-                      "What needs to be done?",
+                      "What needs to be done? *",
                       style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 16.sp,
@@ -212,7 +212,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Text(
-                  "PRIORITY",
+                  "PRIORITY *",
                   style: TextStyle(
                     letterSpacing: 2,
                     fontSize: 14.sp,
@@ -276,7 +276,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Text(
-                  "CATEGORY",
+                  "CATEGORY (OPTIONAL)",
                   style: TextStyle(
                     letterSpacing: 2,
                     fontSize: 14.sp,
@@ -482,7 +482,6 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
                     ),
                     onPressed:
                         (titleController.text.trim().isNotEmpty &&
-                            category != null &&
                             priority != null)
                         ? () {
                             if (widget.task == null) {
@@ -492,7 +491,6 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
                                   description: descriptionController.text
                                       .trim(),
                                   priority: priority!,
-                                  category: category!,
                                   createdAt: DateTime.now(),
                                   dueDate: dueDate,
                                 ),

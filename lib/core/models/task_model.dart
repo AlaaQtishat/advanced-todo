@@ -4,7 +4,7 @@ class TaskModel {
   final bool isCompleted;
   final bool isPinned;
   final String priority;
-  final String category;
+  final String? category;
   final DateTime createdAt;
   DateTime? dueDate;
   TaskModel({
@@ -13,7 +13,7 @@ class TaskModel {
     this.isCompleted = false,
     this.isPinned = false,
     required this.priority,
-    required this.category,
+    this.category,
     required this.createdAt,
     this.dueDate,
   });
@@ -25,7 +25,7 @@ class TaskModel {
       isCompleted: json['isCompleted'] ?? false,
       isPinned: json['isPinned'] ?? false,
       priority: json['priority'] ?? 'Low',
-      category: json['category'] ?? 'General',
+      category: json['category'] ?? 'Work',
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'])
           : DateTime.now(),
