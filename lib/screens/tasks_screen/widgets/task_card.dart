@@ -354,6 +354,7 @@ class _TaskCardState extends State<TaskCard> {
                           widget.onDelete();
                         },
                         buttonColor: Colors.red,
+                        confirmationMessage: "Task deleted successfully",
                       ),
                     );
                   },

@@ -220,6 +220,8 @@ class _MoreScreenState extends State<MoreScreen> {
                                               .markAllAsCompleted();
                                         },
                                         buttonColor: AppThemes.primaryGreen,
+                                        confirmationMessage:
+                                            "Successfully marked all tasks as complete",
                                       );
                                     },
                                   );
@@ -301,6 +303,8 @@ class _MoreScreenState extends State<MoreScreen> {
                                               .read<TaskProvider>()
                                               .clearCompletedTasks();
                                         },
+                                        confirmationMessage:
+                                            "Successfully deleted all completed tasks",
                                         buttonColor: AppThemes.highPriorityRed,
                                       );
                                     },
