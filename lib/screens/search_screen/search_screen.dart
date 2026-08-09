@@ -193,7 +193,7 @@ class _SearchScreenState extends State<SearchScreen> {
           onEdit: task.isCompleted
               ? null
               : () {
-                  FocusScope.of(context).unfocus();
+                  // FocusScope.of(context).unfocus();
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -217,11 +217,11 @@ class _SearchScreenState extends State<SearchScreen> {
           onPin: task.isCompleted
               ? null
               : () {
-                  FocusScope.of(context).unfocus();
+                  // FocusScope.of(context).unfocus();
                   context.read<TaskProvider>().togglePin(task);
                 },
           onDelete: () {
-            FocusScope.of(context).unfocus();
+            // FocusScope.of(context).unfocus();
             context.read<TaskProvider>().removeTask(task);
           },
         );

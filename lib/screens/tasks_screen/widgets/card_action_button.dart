@@ -28,7 +28,12 @@ class CardActionButton extends StatelessWidget {
             : AppThemes.darkGrey.withOpacity(0.05));
     final iconclr = iconColor ?? (isDark ? Colors.grey : AppThemes.darkGrey);
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap == null
+          ? null
+          : () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              onTap?.call();
+            },
       child: Container(
         width: 36.w,
         height: 36.w,

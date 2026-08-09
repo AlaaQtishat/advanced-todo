@@ -99,6 +99,8 @@ class TaskScreenHeader extends StatelessWidget {
                                       .markAllAsCompleted();
                                 },
                                 buttonColor: AppThemes.primaryGreen,
+                                confirmationMessage:
+                                    "Successfully marked all tasks as complete.",
                               );
                             },
                           );
@@ -116,6 +118,8 @@ class TaskScreenHeader extends StatelessWidget {
                                       .clearCompletedTasks();
                                 },
                                 buttonColor: AppThemes.highPriorityRed,
+                                confirmationMessage:
+                                    "Successfully deleted all completed tasks.",
                               );
                             },
                           );
