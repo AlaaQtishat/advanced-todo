@@ -490,6 +490,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
                                   taskTitle: titleController.text.trim(),
                                   description: descriptionController.text
                                       .trim(),
+                                  category: category,
                                   priority: priority!,
                                   createdAt: DateTime.now(),
                                   dueDate: dueDate,
@@ -513,7 +514,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
                                 isCompleted: widget.task!.isCompleted,
                                 isPinned: widget.task!.isPinned,
                                 priority: priority!,
-                                category: category!,
+                                category: category,
                                 createdAt: widget.task!.createdAt,
                                 dueDate: dueDate,
                               );

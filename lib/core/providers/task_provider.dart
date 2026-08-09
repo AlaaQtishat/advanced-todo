@@ -202,7 +202,7 @@ class TaskProvider extends ChangeNotifier {
 
     final diffDays = due.difference(today).inDays;
 
-    return diffDays <= 3;
+    return diffDays >= 0 && diffDays <= 3;
   }
 
   void reorderTasks(int oldIndex, int newIndex, List<TaskModel> currentList) {
