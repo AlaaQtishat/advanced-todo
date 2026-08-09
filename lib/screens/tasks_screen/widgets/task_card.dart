@@ -350,7 +350,7 @@ class _TaskCardState extends State<TaskCard> {
                         content:
                             "Are you sure you want to permanently delete this task?",
                         onPressed: () {
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
                           widget.onDelete();
                         },
                         buttonColor: Colors.red,

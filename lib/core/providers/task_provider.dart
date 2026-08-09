@@ -52,27 +52,24 @@ class TaskProvider extends ChangeNotifier {
   }
 
   int get pinnedCount => _globalTasks.where((task) => task.isPinned).length;
-  int get highPriorityCount => _globalTasks
-      .where((task) => task.priority == "High" && !task.isCompleted)
-      .length;
-  int get mediumPriorityCount => _globalTasks
-      .where((task) => task.priority == "Medium" && !task.isCompleted)
-      .length;
-  int get lowPriorityCount => _globalTasks
-      .where((task) => task.priority == "Low" && !task.isCompleted)
-      .length;
-  int get workCategoryCount => _globalTasks
-      .where((task) => task.category == "Work" && !task.isCompleted)
-      .length;
-  int get personalCategoryCount => _globalTasks
-      .where((task) => task.category == "Personal" && !task.isCompleted)
-      .length;
-  int get shoppingCategoryCount => _globalTasks
-      .where((task) => task.category == "Shopping" && !task.isCompleted)
-      .length;
-  int get studyCategoryCount => _globalTasks
-      .where((task) => task.category == "Study" && !task.isCompleted)
-      .length;
+
+  int getSpecificCategoryCount(String category) {
+    return _globalTasks
+        .where((task) => task.category == category && !task.isCompleted)
+        .length;
+  }
+
+  int getSpecificPriorityCount(String priority) {
+    return _globalTasks
+        .where((task) => task.priority == priority && !task.isCompleted)
+        .length;
+  }
+
+  double getSpecificPriorityPercent(String priority) {
+    final allTasksCount = allTasks.length;
+    if (allTasksCount == 0) return 0.0;
+    return getSpecificPriorityCount(priority) / allTasksCount;
+  }
 
   double get completionPercent {
     final allTasksCount = _globalTasks.length;
@@ -87,27 +84,6 @@ class TaskProvider extends ChangeNotifier {
 
   int get percentInt {
     return (completionPercent * 100).toInt();
-  }
-
-  double get highPriorityPercent {
-    final allTasksCount = _globalTasks.length;
-    if (allTasksCount == 0) return 0.0;
-
-    return highPriorityCount / allTasksCount;
-  }
-
-  double get mediumPriorityPercent {
-    final allTasksCount = _globalTasks.length;
-    if (allTasksCount == 0) return 0.0;
-
-    return mediumPriorityCount / allTasksCount;
-  }
-
-  double get lowPriorityPercent {
-    final allTasksCount = _globalTasks.length;
-    if (allTasksCount == 0) return 0.0;
-
-    return lowPriorityCount / allTasksCount;
   }
 
   int get totalRemainingCount {

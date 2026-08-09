@@ -27,17 +27,8 @@ class _StatsScreenState extends State<StatsScreen> {
     final allTasksCount = provider.allTasks.length;
     final pinnedCount = provider.pinnedCount;
     final int dueSoonCount = provider.totalDueSoonCount;
-    final int highPriorityCount = provider.highPriorityCount;
-    final int mediumPriorityCount = provider.mediumPriorityCount;
-    final int lowPriorityCount = provider.lowPriorityCount;
-    final int workCategoryCount = provider.workCategoryCount;
-    final int personalCategoryCount = provider.personalCategoryCount;
-    final int shoppingCategoryCount = provider.shoppingCategoryCount;
-    final int studyCategoryCount = provider.studyCategoryCount;
     final double completionPercent = provider.completionPercent;
-    final double highPriorityPercent = provider.highPriorityPercent;
-    final double mediumPriorityPercent = provider.mediumPriorityPercent;
-    final double lowPriorityPercent = provider.lowPriorityPercent;
+
     final int percentInt = provider.percentInt;
 
     return Scaffold(
@@ -394,14 +385,18 @@ class _StatsScreenState extends State<StatsScreen> {
                               LinearPercentIndicator(
                                 width: 250.w,
                                 lineHeight: 8.0.h,
-                                percent: highPriorityPercent,
+                                percent: provider.getSpecificPriorityPercent(
+                                  "High",
+                                ),
                                 backgroundColor: Colors.grey.withOpacity(0.2),
                                 progressColor: AppThemes.highPriorityRed,
                                 barRadius: Radius.circular(4.r),
                               ),
                               Spacer(),
                               Text(
-                                highPriorityCount.toString(),
+                                provider
+                                    .getSpecificPriorityCount("High")
+                                    .toString(),
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w900,
@@ -433,14 +428,18 @@ class _StatsScreenState extends State<StatsScreen> {
                               LinearPercentIndicator(
                                 width: 250.w,
                                 lineHeight: 8.0.h,
-                                percent: mediumPriorityPercent,
+                                percent: provider.getSpecificPriorityPercent(
+                                  "Medium",
+                                ),
                                 backgroundColor: Colors.grey.withOpacity(0.2),
                                 progressColor: AppThemes.mediumPriorityOrange,
                                 barRadius: Radius.circular(4.r),
                               ),
                               Spacer(),
                               Text(
-                                mediumPriorityCount.toString(),
+                                provider
+                                    .getSpecificPriorityCount("Medium")
+                                    .toString(),
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w900,
@@ -471,14 +470,18 @@ class _StatsScreenState extends State<StatsScreen> {
                               LinearPercentIndicator(
                                 width: 250.w,
                                 lineHeight: 8.0.h,
-                                percent: lowPriorityPercent,
+                                percent: provider.getSpecificPriorityPercent(
+                                  "Low",
+                                ),
                                 backgroundColor: Colors.grey.withOpacity(0.2),
                                 progressColor: AppThemes.lowPriorityBlue,
                                 barRadius: Radius.circular(4.r),
                               ),
                               Spacer(),
                               Text(
-                                lowPriorityCount.toString(),
+                                provider
+                                    .getSpecificPriorityCount("Low")
+                                    .toString(),
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w900,
@@ -558,19 +561,27 @@ class _StatsScreenState extends State<StatsScreen> {
                             children: [
                               GridCategoryCard(
                                 title: "Work",
-                                taskCount: workCategoryCount,
+                                taskCount: provider.getSpecificCategoryCount(
+                                  "Work",
+                                ),
                               ),
                               GridCategoryCard(
                                 title: "Personal",
-                                taskCount: personalCategoryCount,
+                                taskCount: provider.getSpecificCategoryCount(
+                                  "Personal",
+                                ),
                               ),
                               GridCategoryCard(
                                 title: "Shopping",
-                                taskCount: shoppingCategoryCount,
+                                taskCount: provider.getSpecificCategoryCount(
+                                  "Shopping",
+                                ),
                               ),
                               GridCategoryCard(
                                 title: "Study",
-                                taskCount: studyCategoryCount,
+                                taskCount: provider.getSpecificCategoryCount(
+                                  "Study",
+                                ),
                               ),
                             ],
                           ),
