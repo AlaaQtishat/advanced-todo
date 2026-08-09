@@ -121,6 +121,13 @@ class _StatsScreenState extends State<StatsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CircularPercentIndicator(
+                              center: Text(
+                                "$percentInt%",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.sp,
+                                ),
+                              ),
                               radius: 45.0,
                               lineWidth: 10.0,
                               percent: completionPercent,
@@ -135,14 +142,6 @@ class _StatsScreenState extends State<StatsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "$percentInt%",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32.sp,
-                                  ),
-                                ),
-                                SizedBox(height: 4.h),
                                 Text(
                                   "Completion rate",
                                   style: TextStyle(
