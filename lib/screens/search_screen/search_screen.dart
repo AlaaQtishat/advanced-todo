@@ -42,96 +42,104 @@ class _SearchScreenState extends State<SearchScreen> {
       }).toList();
     }
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 160.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: isDark ? theme.scaffoldBackgroundColor : Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: statusBarHeight),
-                  Text(
-                    "Search",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.sp,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16.w, top: 16.h),
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            side: BorderSide(color: Colors.transparent),
-                          ),
-                          icon: Icon(
-                            Icons.close,
-                            size: 24.sp,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            searchController.clear();
-                            setState(() {
-                              searchQuery = '';
-                            });
-                          },
-                        ),
-                        filled: true,
-                        fillColor: isDark ? theme.cardColor : Color(0xFFF1F5F9),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          borderRadius: BorderRadius.circular(24.r),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          borderRadius: BorderRadius.circular(24.r),
-                        ),
-                        hintText: "Search tasks...",
-                        contentPadding: EdgeInsets.only(
-                          left: 40.w,
-                          top: 16.h,
-                          bottom: 16.h,
-                        ),
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20.sp,
-                        ),
-                      ),
-                    ),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            Container(
+              height: 160.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: isDark ? theme.scaffoldBackgroundColor : Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
                   ),
                 ],
               ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: statusBarHeight),
+                    Text(
+                      "Search",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.sp,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 16.w, top: 16.h),
+                      child: TextField(
+                        controller: searchController,
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            icon: Icon(
+                              Icons.close,
+                              size: 24.sp,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              searchController.clear();
+                              setState(() {
+                                searchQuery = '';
+                              });
+                              FocusScope.of(context).unfocus();
+                            },
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? theme.cardColor
+                              : Color(0xFFF1F5F9),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius: BorderRadius.circular(24.r),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius: BorderRadius.circular(24.r),
+                          ),
+                          hintText: "Search tasks...",
+                          contentPadding: EdgeInsets.only(
+                            left: 40.w,
+                            top: 16.h,
+                            bottom: 16.h,
+                          ),
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          Expanded(child: buildBodyContent(searchResults)),
-        ],
+            Expanded(child: buildBodyContent(searchResults)),
+          ],
+        ),
       ),
     );
   }
@@ -185,6 +193,7 @@ class _SearchScreenState extends State<SearchScreen> {
           onEdit: task.isCompleted
               ? null
               : () {
+                  FocusScope.of(context).unfocus();
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -201,12 +210,18 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
           index: index,
           task: task,
-          onToggleComplete: () =>
-              context.read<TaskProvider>().toggleTask(task, !task.isCompleted),
+          onToggleComplete: () {
+            FocusScope.of(context).unfocus();
+            context.read<TaskProvider>().toggleTask(task, !task.isCompleted);
+          },
           onPin: task.isCompleted
               ? null
-              : () => context.read<TaskProvider>().togglePin(task),
+              : () {
+                  FocusScope.of(context).unfocus();
+                  context.read<TaskProvider>().togglePin(task);
+                },
           onDelete: () {
+            FocusScope.of(context).unfocus();
             context.read<TaskProvider>().removeTask(task);
           },
         );
