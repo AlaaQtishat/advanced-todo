@@ -366,6 +366,7 @@ class _TaskCardState extends State<TaskCard> {
                       : Icons.keyboard_arrow_down,
                   onTap: () {
                     setState(() {
+                      FocusScope.of(context).unfocus();
                       isExpanded = !isExpanded;
                     });
                   },
