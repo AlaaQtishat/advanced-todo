@@ -113,14 +113,14 @@ class TaskProvider extends ChangeNotifier {
   void addTask(TaskModel newTask) {
     _globalTasks.insert(0, newTask);
     _saveAndNotify();
+    debugPrintTasks();
   }
 
   void updateTask(TaskModel updatedTask) {
-    final index = _globalTasks.indexWhere(
-      (t) => t.createdAt == updatedTask.createdAt,
-    );
+    final index = _globalTasks.indexWhere((t) => t.id == updatedTask.id);
 
     _globalTasks[index] = TaskModel(
+      id: updatedTask.id,
       taskTitle: updatedTask.taskTitle,
       description: updatedTask.description,
       isCompleted: updatedTask.isCompleted,
@@ -131,6 +131,7 @@ class TaskProvider extends ChangeNotifier {
       dueDate: updatedTask.dueDate,
     );
     _saveAndNotify();
+    debugPrintTasks();
   }
 
   void clearCompletedTasks() {
@@ -142,6 +143,7 @@ class TaskProvider extends ChangeNotifier {
     for (int i = 0; i < _globalTasks.length; i++) {
       if (!_globalTasks[i].isCompleted) {
         _globalTasks[i] = TaskModel(
+          id: _globalTasks[i].id,
           taskTitle: _globalTasks[i].taskTitle,
           description: _globalTasks[i].description,
           isCompleted: true,
@@ -154,17 +156,21 @@ class TaskProvider extends ChangeNotifier {
       }
     }
     _saveAndNotify();
+    debugPrintTasks();
   }
 
   void removeTask(TaskModel task) {
-    _globalTasks.removeWhere((t) => t.createdAt == task.createdAt);
+    _globalTasks.removeWhere((t) => t.id == task.id);
     _saveAndNotify();
+    debugPrintTasks();
   }
 
   void toggleTask(TaskModel task, bool newValue) {
-    final index = _globalTasks.indexWhere((t) => t.createdAt == task.createdAt);
-
-    _globalTasks[index] = TaskModel(
+    final index = _globalTasks.indexWhere((t) => t.id == task.id);
+    if (index == -1) return;
+    _globalTasks.removeAt(index);
+    final updatedTask = TaskModel(
+      id: task.id,
       taskTitle: task.taskTitle,
       description: task.description,
       isCompleted: newValue,
@@ -174,13 +180,29 @@ class TaskProvider extends ChangeNotifier {
       createdAt: task.createdAt,
       dueDate: task.dueDate,
     );
+    if (newValue == true) {
+      final firstDoneIndex = _globalTasks.indexWhere((t) => t.isCompleted);
+
+      if (firstDoneIndex != -1) {
+        _globalTasks.insert(firstDoneIndex, updatedTask);
+      } else {
+        _globalTasks.add(updatedTask);
+      }
+    } else {
+      final pinnedCount = _globalTasks
+          .where((t) => !t.isCompleted && t.isPinned)
+          .length;
+      _globalTasks.insert(pinnedCount, updatedTask);
+    }
     _saveAndNotify();
+    debugPrintTasks();
   }
 
   void togglePin(TaskModel task) {
-    final index = _globalTasks.indexWhere((t) => t.createdAt == task.createdAt);
+    final index = _globalTasks.indexWhere((t) => t.id == task.id);
 
     _globalTasks[index] = TaskModel(
+      id: task.id,
       taskTitle: task.taskTitle,
       description: task.description,
       isCompleted: task.isCompleted,
@@ -191,6 +213,7 @@ class TaskProvider extends ChangeNotifier {
       dueDate: task.dueDate,
     );
     _saveAndNotify();
+    notifyListeners();
   }
 
   bool isDueSoon(DateTime? dueDate) {
@@ -212,42 +235,65 @@ class TaskProvider extends ChangeNotifier {
     if (oldIndex == newIndex) {
       return;
     }
+
     final draggedTask = currentList[oldIndex];
     final pinnedCount = currentList.where((t) => t.isPinned).length;
+
     if (draggedTask.isPinned) {
-      if (newIndex >= pinnedCount) {
-        _saveAndNotify();
-        return;
-      }
+      if (newIndex >= pinnedCount) return;
     } else {
-      if (newIndex < pinnedCount) {
-        _saveAndNotify();
-        return;
-      }
+      if (newIndex < pinnedCount) return;
     }
+
     final tempCurrentList = List<TaskModel>.from(currentList);
     final task = tempCurrentList.removeAt(oldIndex);
     tempCurrentList.insert(newIndex, task);
-    _globalTasks.removeWhere((t) => t.createdAt == task.createdAt);
-    if (newIndex == 0) {
-      final itemAfter = tempCurrentList[1];
-      final globalIndex = _globalTasks.indexWhere(
-        (t) => t.createdAt == itemAfter.createdAt,
-      );
-      _globalTasks.insert(globalIndex, task);
-    } else {
-      final itemBefore = tempCurrentList[newIndex - 1];
-      final globalIndex = _globalTasks.indexWhere(
-        (t) => t.createdAt == itemBefore.createdAt,
-      );
-      _globalTasks.insert(globalIndex + 1, task);
+
+    List<int> activeGlobalIndices = [];
+    for (var t in currentList) {
+      int globalIndex = _globalTasks.indexWhere((gt) => gt.id == t.id);
+      if (globalIndex != -1) {
+        activeGlobalIndices.add(globalIndex);
+      }
+    }
+
+    activeGlobalIndices.sort();
+
+    for (int i = 0; i < activeGlobalIndices.length; i++) {
+      _globalTasks[activeGlobalIndices[i]] = tempCurrentList[i];
     }
 
     _saveAndNotify();
+    debugPrintTasks();
   }
 
   void _saveAndNotify() {
     LocalStorage.saveTasks(_globalTasks);
     notifyListeners();
+  }
+
+  void debugPrintTasks() {
+    print('\n======= the status of the tasks =======');
+
+    final active = _globalTasks.where((t) => !t.isCompleted).toList();
+    print('the active tasks: ${active.length}');
+    for (int i = 0; i < active.length; i++) {
+      print('  [$i] ${active[i].taskTitle} - (Pinned: ${active[i].isPinned})');
+    }
+
+    print('----------------------------------');
+
+    final done = _globalTasks.where((t) => t.isCompleted).toList();
+    print('the completed tasks: ${done.length}');
+    for (int i = 0; i < done.length; i++) {
+      print('  [$i] ${done[i].taskTitle}');
+    }
+
+    print('----------------------------------');
+    final all = _globalTasks.map((t) => t.taskTitle).toList();
+    print('all tasks: ${all.length}');
+    for (int i = 0; i < all.length; i++) {
+      print('  [$i] ${all[i]}');
+    }
   }
 }

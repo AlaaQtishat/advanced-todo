@@ -193,18 +193,17 @@ class _SearchScreenState extends State<SearchScreen> {
           onEdit: task.isCompleted
               ? null
               : () {
-                  // FocusScope.of(context).unfocus();
-                  showDialog(
+                  showModalBottomSheet(
                     context: context,
+                    isScrollControlled: true,
+                    backgroundColor: theme.cardColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(24),
+                      ),
+                    ),
                     builder: (context) {
-                      return Dialog(
-                        insetPadding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 24.h,
-                        ),
-                        backgroundColor: theme.cardColor,
-                        child: AddEditTaskForm(task: task),
-                      );
+                      return AddEditTaskForm(task: task);
                     },
                   );
                 },
@@ -217,11 +216,9 @@ class _SearchScreenState extends State<SearchScreen> {
           onPin: task.isCompleted
               ? null
               : () {
-                  // FocusScope.of(context).unfocus();
                   context.read<TaskProvider>().togglePin(task);
                 },
           onDelete: () {
-            // FocusScope.of(context).unfocus();
             context.read<TaskProvider>().removeTask(task);
           },
         );
