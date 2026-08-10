@@ -111,7 +111,10 @@ class TaskProvider extends ChangeNotifier {
   }
 
   void addTask(TaskModel newTask) {
-    _globalTasks.insert(0, newTask);
+    final pinnedCount = _globalTasks
+        .where((t) => !t.isCompleted && t.isPinned)
+        .length;
+    _globalTasks.insert(pinnedCount, newTask);
     _saveAndNotify();
     debugPrintTasks();
   }
@@ -200,20 +203,35 @@ class TaskProvider extends ChangeNotifier {
 
   void togglePin(TaskModel task) {
     final index = _globalTasks.indexWhere((t) => t.id == task.id);
+    if (index == -1) return;
 
-    _globalTasks[index] = TaskModel(
+    _globalTasks.removeAt(index);
+
+    final newPinState = !task.isPinned;
+
+    final updatedTask = TaskModel(
       id: task.id,
       taskTitle: task.taskTitle,
       description: task.description,
       isCompleted: task.isCompleted,
-      isPinned: !task.isPinned,
+      isPinned: newPinState,
       priority: task.priority,
       category: task.category,
       createdAt: task.createdAt,
       dueDate: task.dueDate,
     );
+
+    if (newPinState == true) {
+      _globalTasks.insert(0, updatedTask);
+    } else {
+      final currentPinnedCount = _globalTasks
+          .where((t) => !t.isCompleted && t.isPinned)
+          .length;
+      _globalTasks.insert(currentPinnedCount, updatedTask);
+    }
+
     _saveAndNotify();
-    notifyListeners();
+    debugPrintTasks();
   }
 
   bool isDueSoon(DateTime? dueDate) {
@@ -281,7 +299,7 @@ class TaskProvider extends ChangeNotifier {
       print('  [$i] ${active[i].taskTitle} - (Pinned: ${active[i].isPinned})');
     }
 
-    print('----------------------------------');
+    print('-----------------------------------');
 
     final done = _globalTasks.where((t) => t.isCompleted).toList();
     print('the completed tasks: ${done.length}');
@@ -289,7 +307,7 @@ class TaskProvider extends ChangeNotifier {
       print('  [$i] ${done[i].taskTitle}');
     }
 
-    print('----------------------------------');
+    print('-----------------------------------');
     final all = _globalTasks.map((t) => t.taskTitle).toList();
     print('all tasks: ${all.length}');
     for (int i = 0; i < all.length; i++) {

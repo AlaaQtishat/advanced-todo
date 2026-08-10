@@ -4,6 +4,7 @@ import 'package:todo/core/models/task_model.dart';
 
 class LocalStorage {
   static const String _storageKey = 'saved_tasks';
+  static const String _themeKey = 'isDarkMode';
 
   static Future<void> saveTasks(List<TaskModel> tasks) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -27,5 +28,15 @@ class LocalStorage {
     }
 
     return [];
+  }
+
+  static Future<void> saveTheme(bool isDark) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, isDark);
+  }
+
+  static Future<bool> getTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_themeKey) ?? false;
   }
 }
