@@ -24,7 +24,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
   DateTime? dueDate;
 
   Future<void> _pickDueDate() async {
-    FocusManager.instance.primaryFocus?.unfocus();
+    FocusScope.of(context).requestFocus(FocusNode());
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -509,6 +509,7 @@ class _AddEditTaskFormState extends State<AddEditTaskForm> {
                               );
                             } else {
                               final modifiedTask = TaskModel(
+                                id: widget.task!.id,
                                 taskTitle: titleController.text.trim(),
                                 description: descriptionController.text.trim(),
                                 isCompleted: widget.task!.isCompleted,

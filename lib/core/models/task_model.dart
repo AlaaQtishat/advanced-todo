@@ -1,4 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 class TaskModel {
+  String id;
   final String taskTitle;
   final String description;
   final bool isCompleted;
@@ -8,6 +11,7 @@ class TaskModel {
   final DateTime createdAt;
   DateTime? dueDate;
   TaskModel({
+    String? id,
     required this.taskTitle,
     required this.description,
     this.isCompleted = false,
@@ -16,7 +20,7 @@ class TaskModel {
     this.category,
     required this.createdAt,
     this.dueDate,
-  });
+  }) : id = id ?? const Uuid().v4();
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(

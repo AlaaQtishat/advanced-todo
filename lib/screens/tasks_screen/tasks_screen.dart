@@ -75,20 +75,19 @@ class _TasksScreenState extends State<TasksScreen> {
                           itemBuilder: (context, index) {
                             final task = activeTasks[index];
                             return TaskCard(
-                              key: ValueKey(task.createdAt.toString()),
-
+                              key: ValueKey(task.id),
                               onEdit: () {
-                                showDialog(
+                                showModalBottomSheet(
                                   context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: theme.cardColor,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(24),
+                                    ),
+                                  ),
                                   builder: (context) {
-                                    return Dialog(
-                                      insetPadding: EdgeInsets.symmetric(
-                                        horizontal: 16.w,
-                                        vertical: 16.h,
-                                      ),
-                                      backgroundColor: theme.cardColor,
-                                      child: AddEditTaskForm(task: task),
-                                    );
+                                    return AddEditTaskForm(task: task);
                                   },
                                 );
                               },
@@ -135,7 +134,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           itemBuilder: (context, index) {
                             final task = doneTasks[index];
                             return TaskCard(
-                              key: ValueKey(task.createdAt.toString()),
+                              key: ValueKey(task.id),
                               onEdit: null,
                               index: index,
                               task: task,
